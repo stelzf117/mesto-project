@@ -1,0 +1,50 @@
+/* vendor */
+@import url(../vendor/normalize.css);
+@import url(../vendor/fonts.css);
+
+/* for mixes */
+@import url(../blocks/wrapper/wrapper.css);
+
+/* page */
+@import url(../blocks/page/page.css);
+
+/* header */
+@import url(../blocks/header/header.css);
+@import url(../blocks/header/__logo/header__logo.css);
+
+/* line */
+@import url(../blocks/line/line.css);
+
+/* profile */
+@import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__avatar/profile__avatar.css);
+/* T0D0 если не используется - удалить вместе с файлами */
+@import url(../blocks/profile/__info/profile__info.css); 
+
+@import url(../blocks/profile/__name/profile__name.css);
+@import url(../blocks/profile/__description/profile__description.css);
+@import url(../blocks/profile/__edit/profile__edit.css);
+@import url(../blocks/profile/__add/profile__add.css);
+
+/* elements */
+@import url(../blocks/elements/elements.css);
+@import url(../blocks/element/element.css);
+@import url(../blocks/element/__photo/element__photo.css);
+@import url(../blocks/element/__content/element__content.css);
+@import url(../blocks/element/__name/element__name.css);
+@import url(../blocks/element/__heart/element__heart.css);
+
+
+/* footer */
+@import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css);
+
+/* popup */
+@import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_opened/popup_opened.css);
+@import url(../blocks/popup/__container/popup__container.css);
+@import url(../blocks/popup/__title/popup__title.css);
+@import url(../blocks/popup/__button-save/popup__button-save.css);
+@import url(../blocks/popup/__fields/popup__fields.css);
+@import url(../blocks/popup/__text-field/popup__text-field.css);
+@import url(../blocks/popup/__close/popup__close.css);
