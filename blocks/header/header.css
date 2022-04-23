@@ -1,13 +1,25 @@
 .header {
   margin-top: 45px;
   position: relative;
-  min-height: 74px;
-  border-bottom: 1px solid rgba(84, 84, 84, .7);
+  height: 74px;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  height: 1px;
+  width: 880px;
+  border-bottom: 1px solid #545454;
 }
 
 @media screen and (max-width: 900px) {
   .header {
     margin-top: 28px;
+  }
+  .header::after {
+    margin: 0 -19px;
+    width: 100vw;
   }
 }
 
