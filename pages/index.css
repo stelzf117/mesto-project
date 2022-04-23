@@ -12,13 +12,9 @@
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);
 
-/* line */
-@import url(../blocks/line/line.css);
-
 /* profile */
 @import url(../blocks/profile/profile.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
-/* T0D0 если не используется - удалить вместе с файлами */
 @import url(../blocks/profile/__info/profile__info.css); 
 
 @import url(../blocks/profile/__name/profile__name.css);
@@ -45,6 +41,5 @@
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__title/popup__title.css);
 @import url(../blocks/popup/__button-save/popup__button-save.css);
-@import url(../blocks/popup/__fields/popup__fields.css);
 @import url(../blocks/popup/__text-field/popup__text-field.css);
 @import url(../blocks/popup/__close/popup__close.css);
