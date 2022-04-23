@@ -4,93 +4,91 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Сергей Горбунов">
-  <title>Mesto</title>
+  <title>Место</title>
   <link rel="stylesheet" href="pages/index.css">
 </head>
 <body class="page">
 
   <header class="header wrapper">
-    <img class="header__logo" src="images/logo.svg" alt="">
+    <img class="header__logo" src="images/logo.svg" alt="Место">
   </header>
 
   <section class="profile wrapper">
     <img class="profile__avatar" src="images/author.jpg" alt="Аватар">
     <div class="profile__info">
-      <p class="profile__name">Жак-Ив Кусто</p>
+      <h1 class="profile__name">Жак-Ив Кусто</h1>
       <p class="profile__description">Исследователь океана</p>
-      <button class="profile__edit"></button>
+      <button class="profile__edit" type="button" aria-label="edit information"></button>
     </div>
-    <button class="profile__add"></button>
+    <button class="profile__add" type="button" aria-label="add photo"></button>
   </section>
 
-  <section class="elements wrapper">
+  <div class="elements wrapper">
 
-    <div class="element">
+    <article class="element">
       <img class="element__photo" src="images/__item-1.jpg" alt="Острова фиджи">
         <div class="element__content">
-          <p class="element__name">Фиджи</p>
-          <button class="element__heart"></button>
+          <h2 class="element__name">Фиджи</h2>
+          <button class="element__heart" type="button" aria-label="like"></button>
         </div>
-    </div>
+    </article>
 
-    <div class="element">
+    <article class="element">
       <img class="element__photo" src="images/__item-2.jpg" alt="Бора-бора">
         <div class="element__content">
-          <p class="element__name">Бора-бора</p>
-          <button class="element__heart"></button>
+          <h2 class="element__name">Бора-бора</h2>
+          <button class="element__heart" type="button" aria-label="like"></button>
         </div>
-    </div>
+    </article>
 
-    <div class="element">
+    <article class="element">
       <img class="element__photo" src="images/__item-3.jpg" alt="Атлантическая дорога">
         <div class="element__content">
-          <p class="element__name">Атлантическая дорога</p>
-          <button class="element__heart"></button>
+          <h2 class="element__name">Атлантическая дорога</h2>
+          <button class="element__heart" type="button" aria-label="like"></button>
         </div>
-    </div>
+    </article>
 
-    <div class="element">
+    <article class="element">
       <img class="element__photo" src="images/__item-4.jpg" alt="Галапагосские острова">
         <div class="element__content">
-          <p class="element__name">Галапагосские острова</p>
-          <button class="element__heart"></button>
+          <h2 class="element__name">Галапагосские острова</h2>
+          <button class="element__heart" type="button" aria-label="like"></button>
         </div>
-    </div>
+    </article>
 
-    <div class="element">
+    <article class="element">
       <img class="element__photo" src="images/__item-5.jpg" alt="Остров Эльютера">
         <div class="element__content">
-          <p class="element__name">Остров Эльютера</p>
-          <button class="element__heart"></button>
+          <h2 class="element__name">Остров Эльютера</h2>
+          <button class="element__heart" type="button" aria-label="like"></button>
         </div>
-    </div>
+    </article>
 
-    <div class="element">
+    <article class="element">
       <img class="element__photo" src="images/__item-6.jpg" alt="Сейшельские острова">
         <div class="element__content">
-          <p class="element__name">Сейшельские острова</p>
-          <button class="element__heart"></button>
+          <h2 class="element__name">Сейшельские острова</h2>
+          <button class="element__heart" type="button" aria-label="like"></button>
         </div>
-    </div>
+    </article>
 
-  </section>
+  </div>
 
   <footer class="footer wrapper">
     <p class="footer__copyright">© 2022 Mesto Russia</p>
   </footer>
 
-  <div class="popup popup_opened">
+  <div class="popup">
     <div class="popup__container">
-      <img class="popup__close" src="images/Close.png" alt="Закрыть окно">
+      <button class="popup__close" type="button" aria-label="close"></button>
 
       <h2 class="popup__title">Редактировать профиль</h2>
       
-      <form class="popup__form" action="">
-        <fieldset class="popup__fields">
-          <input class="popup__text-field" type="text" value="Жак-Ив Кусто">
-          <input class="popup__text-field" type="text" value="Исследователь океана">
+      <form class="popup__form" method="get" name="nameAndStatus">
+          <input class="popup__text-field popup__text-field_type_name" type="text" value="Жак-Ив Кусто">
+          <input class="popup__text-field popup__text-field_type_status" type="text" value="Исследователь океана">
           <button class="popup__button-save" type="submit">Сохранить</button>
-        </fieldset>
       </form>
 
     </div>

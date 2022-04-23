@@ -2,6 +2,10 @@
   font-size: 18px;
   margin: 0;
   grid-area: description;
+  max-width: 294px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 768px) {
@@ -19,5 +23,6 @@
 @media screen and (max-width: 425px) {
   .profile__description {
     font-size: 14px;
+    max-width: 189px;
   }
 }
