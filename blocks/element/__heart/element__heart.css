@@ -11,11 +11,3 @@
 .element__heart:hover {
   opacity: .5;
 }
-
-.element__heart:focus {
-  background: center / cover no-repeat url(../../../images/dark-heart.svg);
-}
-
-.element__heart:focus:hover {
-  opacity: 1;
-}
