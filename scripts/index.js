@@ -7,12 +7,12 @@ function popupToggle(popup) {
 }
 
 // РЕДАКТИРОВАНИЕ ПРОФИЛЯ
-const popup_profile = container.querySelector('.popup_type_profile');
-const popup_profile_edit = container.querySelector('.profile__edit');
-const popup_profile_close = container.querySelector('.popup__close_profile');
-const profile_formElement = popup_profile.querySelector('.popup__form_profile');
-const nameInput = profile_formElement.querySelector('.popup__text-field_type_name');
-const jobInput = profile_formElement.querySelector('.popup__text-field_type_status');
+const popupProfile = container.querySelector('.popup_type_profile');
+const popupProfileEdit = container.querySelector('.profile__edit');
+const popupProfileClose = container.querySelector('.popup__close_profile');
+const profileFormElement = popupProfile.querySelector('.popup__form_profile');
+const nameInput = profileFormElement.querySelector('.popup__text-field_type_name');
+const jobInput = profileFormElement.querySelector('.popup__text-field_type_status');
 const profileName = container.querySelector('.profile__name');
 const profileDescription = container.querySelector('.profile__description');
 
@@ -25,23 +25,24 @@ function profileFormSubmit (evt) {
   profileDescription.textContent = jobValue;
 }
 
-popup_profile_edit.addEventListener('click', function () {
-  popupToggle(popup_profile);
+popupProfileEdit.addEventListener('click', function () {
+  popupToggle(popupProfile);
   nameInput.value = profileName.textContent; 
   jobInput.value = profileDescription.textContent;
 });
-popup_profile_close.addEventListener('click', function () {popupToggle(popup_profile)});
-profile_formElement.addEventListener('submit', profileFormSubmit); 
-profile_formElement.addEventListener('submit', function () {popupToggle(popup_profile)});
+popupProfileClose.addEventListener('click', function () {popupToggle(popupProfile)});
+profileFormElement.addEventListener('submit', profileFormSubmit); 
+profileFormElement.addEventListener('submit', function () {popupToggle(popupProfile)});
 
 
 // КАРТОЧКИ
-const popup_addCard = container.querySelector('.popup_type_add-card');
-const popup_addCard_edit = container.querySelector('.popup_addCard_edit');
-const popup_addCard_close = container.querySelector('.popup__close_add-card');
-const addCard_formElement = popup_addCard.querySelector('.popup__form_add-card');
-const elements = container.querySelector('.elements');
-const popup_viewCard = elements.querySelector('.popup__type_view-card');
+const popupAddCard = container.querySelector('.popup_type_add-card');
+const popupAddCardEdit = container.querySelector('.profile__add');
+const popupAddCardClose = container.querySelector('.popup__close_add-card');
+const addCardFormElement = popupAddCard.querySelector('.popup__form_add-card');
+const cardPlace = container.querySelector('.elements');
+const cardBlank = container.querySelector('#card-blank').content;
+
 
 const initialCards = [
   {
@@ -69,12 +70,10 @@ const initialCards = [
     link: '../images/__item-6.jpg'
   }
 ];
-// 123
+
 // фунция отрисовки карточки
 function renderCard(nameImage, linkImage) {
-  const cardBlank = container.querySelector('#card-blank').content; 
   const cardElement = cardBlank.querySelector('.element').cloneNode(true);
-  const cardPlace = container.querySelector('.elements'); 
 
 
   cardElement.querySelector('.element__photo').src = linkImage;
@@ -91,23 +90,23 @@ initialCards.forEach(function (card) {
 // Добавление карточки вручную
 function addCard(evt) {
   evt.preventDefault();
-    const namePicture = addCard_formElement.querySelector('.popup__text-field_type_picture-name').value;
-    const linkPicture = addCard_formElement.querySelector('.popup__text-field_type_picture-link').value;
+    const namePicture = addCardFormElement.querySelector('.popup__text-field_type_picture-name').value;
+    const linkPicture = addCardFormElement.querySelector('.popup__text-field_type_picture-link').value;
     renderCard(namePicture, linkPicture);
-  addCard_formElement.reset();
+    addCardFormElement.reset();
 }
 
-const popup_view_image = container.querySelector('.popup__type_view-card');
+const popupViewCard = container.querySelector('.popup__type_view-card');
 
 function viewCard(imageName, imageLink) {
-  popup_view_image.querySelector('.popup__picture').src = imageLink;
-  popup_view_image.querySelector('.popup__picture').alt = imageName;
-  popup_view_image.querySelector('.popup__description').textContent = imageName;
+  popupViewCard.querySelector('.popup__picture').src = imageLink;
+  popupViewCard.querySelector('.popup__picture').alt = imageName;
+  popupViewCard.querySelector('.popup__description').textContent = imageName;
 }
 
 
 // лайк, удаление карточек и открытие попапа просмотра картинки
-elements.addEventListener('click', function(evt) {
+cardPlace.addEventListener('click', function(evt) {
   if (evt.target.classList.value === 'element__trash') {
     evt.target.closest('.element').remove();
   }
@@ -116,14 +115,14 @@ elements.addEventListener('click', function(evt) {
   }
   else if (evt.target.classList[0] === 'element__photo') {
     viewCard(evt.target.closest('.element').querySelector('.element__name').textContent ,evt.target.src);
-    popupToggle(popup_view_image);
+    popupToggle(popupViewCard);
   }
 })
 
 
 // слушатели формы
-popup_addCard_edit.addEventListener('click', function () {popupToggle(popup_addCard)});
-popup_addCard_close.addEventListener('click', function () {popupToggle(popup_addCard)});
-addCard_formElement.addEventListener('submit', addCard);
-addCard_formElement.addEventListener('submit', function () {popupToggle(popup_addCard)});
-popup_view_image.querySelector('.popup__close').addEventListener(('click'), function() {popupToggle(popup_view_image)});
+popupAddCardEdit.addEventListener('click', function () {popupToggle(popupAddCard)});
+popupAddCardClose.addEventListener('click', function () {popupToggle(popupAddCard)});
+addCardFormElement.addEventListener('submit', addCard);
+addCardFormElement.addEventListener('submit', function () {popupToggle(popupAddCard)});
+popupViewCard.querySelector('.popup__close').addEventListener(('click'), function() {popupToggle(popupViewCard)});
