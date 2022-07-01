@@ -2,8 +2,12 @@
 const container = document.querySelector('.page');
 
 // function toggle popup
-function popupToggle(popup) {
-  popup.classList.toggle('popup_opened');
+function popupOpen(popup) {
+  popup.classList.add('popup_opened');
+}
+
+function popupClose(popup) {
+  popup.classList.remove('popup_opened');
 }
 
 // РЕДАКТИРОВАНИЕ ПРОФИЛЯ
@@ -19,10 +23,9 @@ const profileDescription = container.querySelector('.profile__description');
 
 function profileFormSubmit (evt) {
   evt.preventDefault();
-  const nameValue = nameInput.value;
-  const jobValue = jobInput.value;
-  profileName.textContent = nameValue;
-  profileDescription.textContent = jobValue;
+  profileName.textContent = nameInput.value;
+  profileDescription.textContent = jobInput.value;
+  popupClose(popupProfile);
 }
 
 popupProfileEdit.addEventListener('click', function () {
