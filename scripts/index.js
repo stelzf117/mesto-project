@@ -69,7 +69,7 @@ const initialCards = [
     link: '../images/__item-6.jpg'
   }
 ];
-
+// 123
 // фунция отрисовки карточки
 function renderCard(nameImage, linkImage) {
   const cardBlank = container.querySelector('#card-blank').content; 
