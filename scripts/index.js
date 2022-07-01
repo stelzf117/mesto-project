@@ -7,10 +7,10 @@ function popupToggle(popup) {
 }
 
 // РЕДАКТИРОВАНИЕ ПРОФИЛЯ
-const popup_profile = container.querySelector('.popup_profile');
+const popup_profile = container.querySelector('.popup_type_profile');
 const popup_profile_edit = container.querySelector('.profile__edit');
-const popup_profile_close = container.querySelector('.popup_profile_close');
-const profile_formElement = popup_profile.querySelector('.profile_popup_form');
+const popup_profile_close = container.querySelector('.popup__close_profile');
+const profile_formElement = popup_profile.querySelector('.popup__form_profile');
 const nameInput = profile_formElement.querySelector('.popup__text-field_type_name');
 const jobInput = profile_formElement.querySelector('.popup__text-field_type_status');
 const profileName = container.querySelector('.profile__name');
@@ -36,12 +36,12 @@ profile_formElement.addEventListener('submit', function () {popupToggle(popup_pr
 
 
 // КАРТОЧКИ
-const popup_addCard = container.querySelector('.popup_addCard');
+const popup_addCard = container.querySelector('.popup_type_add-card');
 const popup_addCard_edit = container.querySelector('.popup_addCard_edit');
-const popup_addCard_close = container.querySelector('.popup_addCard_close');
-const addCard_formElement = popup_addCard.querySelector('.addCard_popup_form');
+const popup_addCard_close = container.querySelector('.popup__close_add-card');
+const addCard_formElement = popup_addCard.querySelector('.popup__form_add-card');
 const elements = container.querySelector('.elements');
-const popup_viewCard = elements.querySelector('.popup_viewCard');
+const popup_viewCard = elements.querySelector('.popup__type_view-card');
 
 const initialCards = [
   {
@@ -91,13 +91,13 @@ initialCards.forEach(function (card) {
 // Добавление карточки вручную
 function addCard(evt) {
   evt.preventDefault();
-    const namePicture = addCard_formElement.querySelector('.popup__text-field_type_pictureName').value;
-    const linkPicture = addCard_formElement.querySelector('.popup__text-field_type_pictureLink').value;
+    const namePicture = addCard_formElement.querySelector('.popup__text-field_type_picture-name').value;
+    const linkPicture = addCard_formElement.querySelector('.popup__text-field_type_picture-link').value;
     renderCard(namePicture, linkPicture);
   addCard_formElement.reset();
 }
 
-const popup_view_image = container.querySelector('.popup_viewCard');
+const popup_view_image = container.querySelector('.popup__type_view-card');
 
 function viewCard(imageName, imageLink) {
   popup_view_image.querySelector('.popup__picture').src = imageLink;

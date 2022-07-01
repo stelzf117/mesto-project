@@ -30,44 +30,44 @@
     <p class="footer__copyright">© 2022 Mesto Russia</p>
   </footer>
 
-  <div class="popup popup_profile">
+  <div class="popup popup_type_profile">
     <div class="popup__container">
-      <button class="popup__close popup_profile_close" type="button" aria-label="close"></button>
+      <button class="popup__close popup__close_profile" type="button" aria-label="close"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form profile_popup_form" method="get" name="nameAndStatus">
-          <input class="popup__text-field popup__text-field_type_name" type="text">
-          <input class="popup__text-field popup__text-field_type_status" type="text">
+      <form class="popup__form popup__form_profile" method="get" name="nameAndStatus">
+          <input class="popup__text-field popup__text-field_type_name" type="text" placeholder="Имя">
+          <input class="popup__text-field popup__text-field_type_status" type="text" placeholder="Статус">
           <button class="popup__button-save" type="submit">Сохранить</button>
       </form>
 
     </div>
   </div>
 
-  <div class="popup popup_addCard">
+  <div class="popup popup_type_add-card">
     <div class="popup__container">
-      <button class="popup__close popup_addCard_close" type="button" aria-label="close"></button>
+      <button class="popup__close popup__close_add-card" type="button" aria-label="close"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form class="popup__form addCard_popup_form" method="get" name="addCard">
-          <input class="popup__text-field popup__text-field_type_pictureName" type="text" placeholder="Название">
-          <input class="popup__text-field popup__text-field_type_pictureLink" type="text" placeholder="Ссылка на картинку">
+      <form class="popup__form popup__form_add-card" method="get" name="addCard">
+          <input class="popup__text-field popup__text-field_type_picture-name" type="text" placeholder="Название">
+          <input class="popup__text-field popup__text-field_type_picture-link" type="text" placeholder="Ссылка на картинку">
           <button class="popup__button-save" type="submit">Сохранить</button>
       </form>
 
     </div>
   </div>
 
-  <div class="popup popup_viewCard">
+  <div class="popup popup__type_view-card">
     <div class="popup__viewer">
       <button class="popup__close" type="button" aria-label="close"></button>
-      <img class="popup__picture" src="" alt="">
-      <p class="popup__description">Архыз</p>
+      <img class="popup__picture" src="" alt="Нет описания">
+      <p class="popup__description">Нет описания</p>
     </div>
   </div>
 
   <template id="card-blank">
     <article class="element">
-      <button class="element__trash"></button>
-      <img class="element__photo" src="" alt="">
+      <button class="element__trash" type="button"></button>
+      <img class="element__photo" src="images/no-image.jpg" alt="">
       <div class="element__content">
         <h2 class="element__name"></h2>
         <button class="element__heart" type="button" aria-label="like"></button>
