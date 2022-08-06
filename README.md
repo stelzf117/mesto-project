@@ -4,4 +4,4 @@
 
 **3. Указание, что за технологии используются:** HTML5, CSS3, flexbox, БЭМ-Nested, Grid.
 
-Github pages https://stelzf117.github.io/mesto-project/
+<a href="https://stelzf117.github.io/mesto-project/">Github pages</a>
