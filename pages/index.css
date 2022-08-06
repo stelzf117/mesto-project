@@ -15,7 +15,6 @@
 /* profile */
 @import url(../blocks/profile/profile.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
-/* T0D0 если не используется - удалить вместе с файлами */
 @import url(../blocks/profile/__info/profile__info.css); 
 
 @import url(../blocks/profile/__name/profile__name.css);
