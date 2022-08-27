@@ -1,3 +1,4 @@
 .popup__viewer {
   position: relative;
+  cursor: default;
 }

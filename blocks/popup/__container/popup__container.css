@@ -5,6 +5,7 @@
   max-width: 430px;
   min-height: 330px;
   border-radius: 10px;
+  cursor: default;
 }
 
 @media screen and (max-width: 540px) {
