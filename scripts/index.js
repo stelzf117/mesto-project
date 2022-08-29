@@ -21,17 +21,15 @@ const popupDescription =  popupViewCard.querySelector('.popup__description');
 let currentPopup;
 
 // Функции
-function refreshCurrentPopup() {currentPopup = container.querySelector('.popup_opened')};
-
 function closeEscape(event) {
   if (event.key === 'Escape') {
     closePopup(currentPopup);
   }
-}
+};
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  refreshCurrentPopup();
+  currentPopup = popup;
   container.addEventListener('keydown', closeEscape);
 };
 
@@ -46,14 +44,14 @@ function profileFormSubmit (evt) {
   profileName.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
   closePopup(popupProfile);
-}
+};
 
 
 function viewCard(imageName, imageLink) {
   popupPicture.src = imageLink;
   popupPicture.alt = imageName;
   popupDescription.textContent = imageName;
-}
+};
 
 
 function editingCard(nameImage, linkImage) {
@@ -71,12 +69,12 @@ function editingCard(nameImage, linkImage) {
   heart.addEventListener('click', function() {heart.classList.toggle('element__heart_active');});
   photoElement.addEventListener('click', function() {viewCard(nameImage, linkImage); openPopup(popupViewCard)});
   return cardElement;
-}
+};
 
 
 function renderCard(nameImage, linkImage) {
   cardPlace.prepend(editingCard(nameImage, linkImage));
-}
+};
 
 
 function addCard(evt) {
@@ -85,7 +83,7 @@ function addCard(evt) {
   const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
   renderCard(namePicture, linkPicture);
   formElementAddCard.reset();
-}
+};
 
 
 
@@ -109,10 +107,10 @@ container.addEventListener('click', (event) => {
     nameInput.value = profileName.textContent; 
     jobInput.value = profileDescription.textContent;
   }
-})
+});
 
 container.addEventListener('click', (event) => {
   if(event.target.classList.contains('popup_opened') || event.target.classList.contains('popup__close')) {
     closePopup(currentPopup);
   }
-})
+});
