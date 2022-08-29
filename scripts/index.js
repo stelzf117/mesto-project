@@ -20,11 +20,26 @@ const popupDescription =  popupViewCard.querySelector('.popup__description');
 
 let currentPopup;
 
-
 // Функции
-function openPopup(popup) {popup.classList.add('popup_opened')};
-function closePopup(popup) {popup.classList.remove('popup_opened')};
 function refreshCurrentPopup() {currentPopup = container.querySelector('.popup_opened')};
+
+function closeEscape(event) {
+  if (event.key === 'Escape') {
+    closePopup(currentPopup);
+  }
+}
+
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+  refreshCurrentPopup();
+  container.addEventListener('keydown', closeEscape);
+};
+
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+  container.removeEventListener('keydown', closeEscape);
+};
+
 
 function profileFormSubmit (evt) {
   evt.preventDefault();
@@ -98,14 +113,6 @@ container.addEventListener('click', (event) => {
 
 container.addEventListener('click', (event) => {
   if(event.target.classList.contains('popup_opened') || event.target.classList.contains('popup__close')) {
-    refreshCurrentPopup();
-    closePopup(currentPopup);
-  }
-})
-
-container.addEventListener('keydown', (event) => {
-  refreshCurrentPopup();
-  if (event.key === 'Escape') {
     closePopup(currentPopup);
   }
 })
