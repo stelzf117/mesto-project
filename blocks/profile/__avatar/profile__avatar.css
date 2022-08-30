@@ -1,8 +1,46 @@
 .profile__avatar {
   display: block;
   border-radius: 100%;
-  max-width: 120px;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  object-position: center;
+  width: 120px;
+  height: 120px;
+  background: center no-repeat url(../../../images/author.jpg);
+  background-size: contain;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.profile__avatar::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.profile__avatar:hover::before {
+  opacity: 1;
+}
+
+.profile__avatar::after {
+  content: "";
+  background: center no-repeat url(../../../images/pen.svg) transparent;
+  background-size: 26px 26px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity .2s ease-in-out;
+  position: absolute;
+}
+
+.profile__avatar:hover::after {
+  opacity: 1;
 }

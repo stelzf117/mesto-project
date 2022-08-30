@@ -14,7 +14,7 @@
   </header>
 
   <section class="profile wrapper">
-    <img class="profile__avatar" src="images/author.jpg" alt="Аватар">
+    <button class="profile__avatar" type="button" aria-label="change avatar"></button>
     <div class="profile__info">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
       <p class="profile__description">Исследователь океана</p>
@@ -39,6 +39,18 @@
           <input class="popup__text-field popup__text-field_type_status" type="text" placeholder="Статус">
           <button class="popup__button-save" type="submit">Сохранить</button>
       </form>
+
+    </div>
+  </div>
+
+  <div class="popup popup__type_edit-avatar">
+    <div class="popup__container">
+      <button class="popup__close popup__close_type_edit-avatar" type="button" aria-label="close"></button>
+      <h2 class="popup__title">Обновить аватар</h2>
+      <form class="popup__form popup__form_type_avatar" method="get" name="nameAndStatus">
+        <input class="popup__text-field popup__text-field_type_link-picture" type="text" placeholder="Ссылка на изображение">
+        <button class="popup__button-save" type="submit">Сохранить</button>
+    </form>
 
     </div>
   </div>

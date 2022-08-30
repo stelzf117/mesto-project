@@ -1,6 +1,6 @@
 // Переменные
 const container = document.querySelector('.page');
-const popupProfile = container.querySelector('.popup_type_profile');
+const popupProfile = container.querySelector('.popup_type_profile'); //профиль
 const popupProfileEdit = container.querySelector('.profile__edit');
 const profileFormElement = popupProfile.querySelector('.popup__form_type_profile');
 const nameInput = profileFormElement.querySelector('.popup__text-field_type_name');
@@ -8,17 +8,22 @@ const jobInput = profileFormElement.querySelector('.popup__text-field_type_statu
 const profileName = container.querySelector('.profile__name');
 const profileDescription = container.querySelector('.profile__description');
 
-const popupAddCard = container.querySelector('.popup_type_add-card');
+const popupEditAvatar = container.querySelector('.popup__type_edit-avatar'); //аватар
+const avatar = container.querySelector('.profile__avatar');
+const formElementEditAvatar = container.querySelector('.popup__text-field_type_link-picture');
+const formEditAvatar = container.querySelector('.popup__form_type_avatar');
+
+const popupAddCard = container.querySelector('.popup_type_add-card'); //добавление карточки
 const popupAddCardEdit = container.querySelector('.profile__add');
 const formElementAddCard = popupAddCard.querySelector('.popup__form_type_add-card');
 const cardPlace = container.querySelector('.elements');
 const cardBlank = container.querySelector('#card-blank').content;
 
-const popupViewCard = container.querySelector('.popup__type_view-card');
+const popupViewCard = container.querySelector('.popup__type_view-card'); // просмотр карточки
 const popupPicture = popupViewCard.querySelector('.popup__picture');
 const popupDescription =  popupViewCard.querySelector('.popup__description');
 
-let currentPopup;
+let currentPopup; // текущий открытый попап
 
 // Функции
 function closeEscape(event) {
@@ -86,6 +91,12 @@ function addCard(evt) {
 };
 
 
+function changeAvatar(evt) {
+  evt.preventDefault();
+  
+}
+
+
 
 // Исполняемый код
 initialCards.forEach(function (card) {
@@ -106,6 +117,9 @@ container.addEventListener('click', (event) => {
     openPopup(popupProfile);
     nameInput.value = profileName.textContent; 
     jobInput.value = profileDescription.textContent;
+  }
+  else if (event.target.classList.contains('profile__avatar')) {
+    openPopup(popupEditAvatar);
   }
 });
 
