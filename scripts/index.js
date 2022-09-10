@@ -44,8 +44,7 @@ function closePopup(popup) {
 };
 
 
-function profileFormSubmit (evt) {
-  evt.preventDefault();
+function profileFormSubmit () {
   profileName.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
   closePopup(popupProfile);
@@ -82,8 +81,7 @@ function renderCard(nameImage, linkImage) {
 };
 
 
-function addCard(evt) {
-  evt.preventDefault();
+function addCard() {
   const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value;
   const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
   renderCard(namePicture, linkPicture);
@@ -91,14 +89,82 @@ function addCard(evt) {
 };
 
 
-function changeAvatar(evt) {
+function changeAvatar(evt) { // T0D0 сделать смену аватара
   evt.preventDefault();
-  
+};
+
+
+function showInputError(formElement, inputElement, errorMessage) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  errorElement.textContent = errorMessage;
+  inputElement.classList.add('popup__text-field__error');
+};
+
+function hideInputError(formElement, inputElement) {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  errorElement.textContent = '';
+  inputElement.classList.remove('popup__text-field__error');
+};
+
+function checkInputValidity(formElement, inputElement) {
+  if(!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  }
+  else {
+    hideInputError(formElement, inputElement);
+  };
+};
+
+function setEventListeners(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__text-field'));
+  const buttonElement = formElement.querySelector('.popup__button-save');
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      console.log('formELement = ', formElement);
+      console.log('inputElement = ', inputElement);
+      checkInputValidity(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
+    });
+  });
+};
+
+function enableValidation() {
+  const formList = Array.from(container.querySelectorAll('.popup__form'));
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    });
+    setEventListeners(formElement);
+  });
+};
+
+function hasInvalidInput(inputList) {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid
+  });
+};
+
+function toggleButtonState(inputList, buttonElement) {
+  if(hasInvalidInput(inputList)) {
+    buttonElement.setAttribute('disabled', true)
+  }
+  else {
+    buttonElement.removeAttribute('disabled');
+  }
 }
 
-
+function openValidation(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__text-field'));
+  const buttonElement = formElement.querySelector('.popup__button-save');
+  inputList.forEach((inputElement) => {
+    checkInputValidity(formElement, inputElement);
+  })
+  toggleButtonState(inputList, buttonElement);
+}
 
 // Исполняемый код
+enableValidation();
+
 initialCards.forEach(function (card) {
   renderCard(card.name, card.link);
 });
@@ -107,16 +173,18 @@ initialCards.forEach(function (card) {
 
 // Слушатели
 profileFormElement.addEventListener('submit', profileFormSubmit);
-formElementAddCard.addEventListener('submit', function (evt) {addCard(evt); closePopup(popupAddCard)});
+formElementAddCard.addEventListener('submit',  () => {addCard(); closePopup(popupAddCard)});
 
 container.addEventListener('click', (event) => {
   if (event.target.classList.contains('profile__add')) {
     openPopup(popupAddCard);
+    openValidation(formElementAddCard);
   } 
   else if (event.target.classList.contains('profile__edit')) {
     openPopup(popupProfile);
     nameInput.value = profileName.textContent; 
     jobInput.value = profileDescription.textContent;
+    openValidation(profileFormElement);
   }
   else if (event.target.classList.contains('profile__avatar')) {
     openPopup(popupEditAvatar);

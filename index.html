@@ -34,12 +34,13 @@
     <div class="popup__container">
       <button class="popup__close popup__close_type_profile" type="button" aria-label="close"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__form popup__form_type_profile" method="get" name="nameAndStatus">
-          <input class="popup__text-field popup__text-field_type_name" type="text" placeholder="Имя">
-          <input class="popup__text-field popup__text-field_type_status" type="text" placeholder="Статус">
-          <button class="popup__button-save" type="submit">Сохранить</button>
+      <form class="popup__form popup__form_type_profile" method="get" name="nameAndStatus" novalidate>
+        <input class="popup__text-field popup__text-field_type_name" id="name-input" type="text" placeholder="Имя" minlength="2" maxlength="40" required>
+        <span class="popup__input-error name-input-error"></span>
+        <input class="popup__text-field popup__text-field_type_status" id="status-input" type="text" placeholder="Статус" minlength="2" maxlength="200" required>
+        <span class="popup__input-error status-input-error"></span>
+        <button class="popup__button-save" type="submit">Сохранить</button>
       </form>
-
     </div>
   </div>
 
@@ -47,11 +48,10 @@
     <div class="popup__container">
       <button class="popup__close popup__close_type_edit-avatar" type="button" aria-label="close"></button>
       <h2 class="popup__title">Обновить аватар</h2>
-      <form class="popup__form popup__form_type_avatar" method="get" name="nameAndStatus">
+      <form class="popup__form popup__form_type_avatar" method="get" name="avatar" novalidate>
         <input class="popup__text-field popup__text-field_type_link-picture" type="text" placeholder="Ссылка на изображение">
         <button class="popup__button-save" type="submit">Сохранить</button>
-    </form>
-
+      </form>
     </div>
   </div>
 
@@ -59,12 +59,13 @@
     <div class="popup__container">
       <button class="popup__close popup__close_type_add-card" type="button" aria-label="close"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form class="popup__form popup__form_type_add-card" method="get" name="addCard">
-          <input class="popup__text-field popup__text-field_type_picture-name" type="text" placeholder="Название">
-          <input class="popup__text-field popup__text-field_type_picture-link" type="text" placeholder="Ссылка на картинку">
+      <form class="popup__form popup__form_type_add-card" method="get" name="addCard" novalidate>
+          <input class="popup__text-field popup__text-field_type_picture-name" id="pictureName-input" type="text" placeholder="Название" minlength="2" maxlength="30" required>
+          <span class="popup__input-error pictureName-input-error"></span>
+          <input class="popup__text-field popup__text-field_type_picture-link" id="linkCardImage-input" type="url" placeholder="Ссылка на картинку" required>
+          <span class="popup__input-error linkCardImage-input-error"></span>
           <button class="popup__button-save" type="submit">Сохранить</button>
       </form>
-
     </div>
   </div>
 
