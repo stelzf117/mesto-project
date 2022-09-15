@@ -34,9 +34,9 @@
       <button class="popup__close popup__close_type_profile" type="button" aria-label="close"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form popup__form_type_profile" method="get" name="nameAndStatus" novalidate>
-        <input class="popup__text-field popup__text-field_type_name" id="name-input" type="text" placeholder="Имя" minlength="2" maxlength="40" required>
+        <input class="popup__text-field popup__text-field_type_name" id="name-input" type="text" placeholder="Имя" minlength="2" maxlength="40" pattern="^[a-zA-Z-А-Яа-яЁё\s]+$" data-error-message="Разрешены только латинские и кириллические символы, а также пробел и дефис" required>
         <span class="popup__input-error name-input-error"></span>
-        <input class="popup__text-field popup__text-field_type_status" id="status-input" type="text" placeholder="Статус" minlength="2" maxlength="200" required>
+        <input class="popup__text-field popup__text-field_type_status" id="status-input" type="text" placeholder="Статус" minlength="2" maxlength="200" pattern="^[a-zA-Z-А-Яа-яЁё\s]+$" data-error-message="Разрешены только латинские и кириллические символы, а также пробел и дефис" required>
         <span class="popup__input-error status-input-error"></span>
         <button class="popup__button-save" type="submit">Сохранить</button>
       </form>
@@ -59,7 +59,7 @@
       <button class="popup__close popup__close_type_add-card" type="button" aria-label="close"></button>
       <h2 class="popup__title">Новое место</h2>
       <form class="popup__form popup__form_type_add-card" method="get" name="addCard" novalidate>
-          <input class="popup__text-field popup__text-field_type_picture-name" id="pictureName-input" type="text" placeholder="Название" minlength="2" maxlength="30" required>
+          <input class="popup__text-field popup__text-field_type_picture-name" id="pictureName-input" type="text" placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-Z-А-Яа-яЁё\s]+$" data-error-message="Разрешены только латинские и кириллические символы, а также пробел и дефис" required>
           <span class="popup__input-error pictureName-input-error"></span>
           <input class="popup__text-field popup__text-field_type_picture-link" id="linkCardImage-input" type="url" placeholder="Ссылка на картинку" required>
           <span class="popup__input-error linkCardImage-input-error"></span>

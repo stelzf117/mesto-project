@@ -1,5 +1,5 @@
 export { viewCard, openPopup, closePopup, currentPopup, profileFormSubmit};
-import { profileName, profileDescription, nameInput, jobInput, popupProfile, popupPicture, popupDescription, popupViewCard } from './variables.js';
+import { profileName, profileDescription, nameInput, jobInput, popupPicture, popupDescription } from './variables.js';
 
 
 let currentPopup; // текущий открытый попап
@@ -13,11 +13,8 @@ function viewCard(imageName, imageLink) {
 function profileFormSubmit () {
   profileName.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
-  closePopup(popupProfile);
 };
 
-
-// Функции
 function closeEscape(event) {
   if (event.key === 'Escape') {
     closePopup(currentPopup);
@@ -34,4 +31,3 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closeEscape);
 };
-

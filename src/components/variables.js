@@ -1,6 +1,8 @@
-export { nameInput, jobInput, profileName, profileDescription, profileFormElement, popupProfile, cardPlace, cardBlank, popupAddCard, formElementAddCard, popupViewCard, popupPicture, popupDescription };
+export { nameInput, jobInput, profileName, profileDescription, profileFormElement, popupProfile, cardPlace, cardBlank, popupAddCard, formElementAddCard, popupViewCard, popupPicture, popupDescription, popupAddCardEdit, popupProfileEdit };
 
 // Переменные
+const popupProfileEdit = document.querySelector('.profile__edit');
+const popupAddCardEdit = document.querySelector('.profile__add');
 const popupProfile = document.querySelector('.popup_type_profile');
 const profileFormElement = popupProfile.querySelector('.popup__form_type_profile');
 const nameInput = profileFormElement.querySelector('.popup__text-field_type_name'); 
@@ -8,15 +10,10 @@ const jobInput = profileFormElement.querySelector('.popup__text-field_type_statu
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 
-const popupProfileEdit = document.querySelector('.profile__edit');
-
 const popupEditAvatar = document.querySelector('.popup__type_edit-avatar'); //аватар
 const avatar = document.querySelector('.profile__avatar');
 const formElementEditAvatar = document.querySelector('.popup__text-field_type_link-picture');
 const formEditAvatar = document.querySelector('.popup__form_type_avatar');
-
-
-const popupAddCardEdit = document.querySelector('.profile__add');
 
 const cardPlace = document.querySelector('.elements');
 const cardBlank = document.querySelector('#card-blank').content;

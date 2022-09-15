@@ -1,6 +1,6 @@
 import { viewCard, openPopup } from "./modal.js";
-import { cardPlace, cardBlank, popupAddCard, formElementAddCard, popupViewCard  } from './variables.js';
-export { initialCards, renderCard, popupAddCard, formElementAddCard, addCard };
+import { cardPlace, cardBlank, formElementAddCard, popupViewCard  } from './variables.js';
+export { initialCards, renderCard, addCard };
 
 const fijiIslands = new URL('../../images/__item-1.jpg', import.meta.url);
 const boraBora = new URL('../../images/__item-2.jpg', import.meta.url);

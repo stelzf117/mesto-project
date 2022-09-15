@@ -1,4 +1,4 @@
-export { openValidation, enableValidation };
+export { enableValidation };
 
 function showInputError(formElement, inputElement, errorMessage) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
@@ -13,6 +13,12 @@ function hideInputError(formElement, inputElement) {
 };
 
 function checkInputValidity(formElement, inputElement) {
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  } 
+  else {
+    inputElement.setCustomValidity('');
+  } 
   if(!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage);
   }
@@ -24,10 +30,9 @@ function checkInputValidity(formElement, inputElement) {
 function setEventListeners(formElement) {
   const inputList = Array.from(formElement.querySelectorAll('.popup__text-field'));
   const buttonElement = formElement.querySelector('.popup__button-save');
+  toggleButtonState(inputList, buttonElement)
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      console.log('formELement = ', formElement);
-      console.log('inputElement = ', inputElement);
       checkInputValidity(formElement, inputElement);
       toggleButtonState(inputList, buttonElement);
     });
@@ -37,8 +42,10 @@ function setEventListeners(formElement) {
 function enableValidation() {
   const formList = Array.from(document.querySelectorAll('.popup__form'));
   formList.forEach((formElement) => {
+    const buttonElement = formElement.querySelector('.popup__button-save');
     formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
+      buttonElement.setAttribute('disabled', true);
     });
     setEventListeners(formElement);
   });
@@ -57,13 +64,4 @@ function toggleButtonState(inputList, buttonElement) {
   else {
     buttonElement.removeAttribute('disabled');
   }
-}
-
-function openValidation(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__text-field'));
-  const buttonElement = formElement.querySelector('.popup__button-save');
-  inputList.forEach((inputElement) => {
-    checkInputValidity(formElement, inputElement);
-  })
-  toggleButtonState(inputList, buttonElement);
 }
