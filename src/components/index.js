@@ -15,13 +15,7 @@ jobInput.value = profileDescription.textContent;
 
 // Слушатели
 popupAddCardEdit.addEventListener('click', () => {openPopup(popupAddCard)});
-popupProfileEdit.addEventListener('click', () => {openPopup(popupProfile);});
-
-document.addEventListener('click', (event) => {
-  if(event.target.classList.contains('popup_opened') || event.target.classList.contains('popup__close')) {
-    closePopup(currentPopup);
-  }
-});
+popupProfileEdit.addEventListener('click', () => {openPopup(popupProfile)});
 
 profileFormElement.addEventListener('submit', () => {profileFormSubmit(); closePopup(popupProfile)});
 formElementAddCard.addEventListener('submit', () => {addCard(); closePopup(popupAddCard)});
