@@ -11,5 +11,5 @@
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  transition: visibility .3s linear, opacity .3s ease-in-out;
+  transition: visibility .2s linear, opacity .2s ease-in-out;
 }
