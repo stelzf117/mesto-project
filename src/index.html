@@ -9,7 +9,7 @@
 <body class="page">
 
   <header class="header wrapper">
-    <img class="header__logo" src="<%=require('../images/logo.svg')%>" alt="Место">
+    <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Место">
   </header>
 
   <section class="profile wrapper">
@@ -71,7 +71,7 @@
   <div class="popup popup__type_view-card">
     <div class="popup__viewer">
       <button class="popup__close" type="button" aria-label="close"></button>
-      <img class="popup__picture" src="<%=require('../images/no-image.jpg')%>" alt="Нет описания">
+      <img class="popup__picture" src="<%=require('./images/no-image.jpg')%>" alt="Нет описания">
       <p class="popup__description">Нет описания</p>
     </div>
   </div>
@@ -79,7 +79,7 @@
   <template id="card-blank">
     <article class="element">
       <button class="element__trash" type="button"></button>
-      <img class="element__photo" src="<%=require('../images/no-image.jpg')%>" alt="">
+      <img class="element__photo" src="<%=require('./images/no-image.jpg')%>" alt="">
       <div class="element__content">
         <h2 class="element__name"></h2>
         <button class="element__heart" type="button" aria-label="like"></button>

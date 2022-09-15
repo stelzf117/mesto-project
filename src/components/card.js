@@ -2,12 +2,12 @@ import { viewCard, openPopup } from "./modal.js";
 import { cardPlace, cardBlank, formElementAddCard, popupViewCard  } from './variables.js';
 export { initialCards, renderCard, addCard };
 
-const fijiIslands = new URL('../../images/__item-1.jpg', import.meta.url);
-const boraBora = new URL('../../images/__item-2.jpg', import.meta.url);
-const atlanticRoad = new URL('../../images/__item-3.jpg', import.meta.url);
-const galapagosIslands = new URL('../../images/__item-4.jpg', import.meta.url);
-const eleutheraIsland = new URL('../../images/__item-5.jpg', import.meta.url);
-const seychelles = new URL('../../images/__item-6.jpg', import.meta.url);
+const fijiIslands = new URL('../images/__item-1.jpg', import.meta.url);
+const boraBora = new URL('../images/__item-2.jpg', import.meta.url);
+const atlanticRoad = new URL('../images/__item-3.jpg', import.meta.url);
+const galapagosIslands = new URL('../images/__item-4.jpg', import.meta.url);
+const eleutheraIsland = new URL('../images/__item-5.jpg', import.meta.url);
+const seychelles = new URL('../images/__item-6.jpg', import.meta.url);
 
 const initialCards = [
   {

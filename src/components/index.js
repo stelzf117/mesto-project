@@ -1,4 +1,4 @@
-import '../../pages/index.css';
+import '../pages/index.css';
 import { initialCards, renderCard, addCard } from './card.js';
 import { openPopup, closePopup, currentPopup, profileFormSubmit } from './modal.js';
 import { enableValidation } from './validate.js';
