@@ -1,3 +1,4 @@
+import '../../pages/index.css';
 import { initialCards, renderCard, popupAddCard, formElementAddCard, addCard } from './card.js';
 import { openPopup, closePopup, currentPopup, profileFormSubmit } from './modal.js';
 import { openValidation, enableValidation } from './validate.js';
@@ -35,3 +36,10 @@ document.addEventListener('click', (event) => {
     closePopup(currentPopup);
   }
 });
+
+const numbers = [2, 3, 5];
+
+// Стрелочная функция. Не запнётся ли на ней Internet Explorer?
+const doubledNumbers = numbers.map(number => number * 2);
+
+console.log(doubledNumbers); // 4, 6, 10 

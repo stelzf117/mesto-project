@@ -2,31 +2,37 @@ import { viewCard, openPopup } from "./modal.js";
 import { cardPlace, cardBlank, popupAddCard, formElementAddCard, popupViewCard  } from './variables.js';
 export { initialCards, renderCard, popupAddCard, formElementAddCard, addCard };
 
+const fijiIslands = new URL('../../images/__item-1.jpg', import.meta.url);
+const boraBora = new URL('../../images/__item-2.jpg', import.meta.url);
+const atlanticRoad = new URL('../../images/__item-3.jpg', import.meta.url);
+const galapagosIslands = new URL('../../images/__item-4.jpg', import.meta.url);
+const eleutheraIsland = new URL('../../images/__item-5.jpg', import.meta.url);
+const seychelles = new URL('../../images/__item-6.jpg', import.meta.url);
 
 const initialCards = [
   {
     name: 'Острова Фиджи',
-    link: 'images/__item-1.jpg'
+    link: fijiIslands
   },
   {
     name: 'Бора-бора',
-    link: 'images/__item-2.jpg'
+    link: boraBora
   },
   {
     name: 'Атлантическая дорога',
-    link: 'images/__item-3.jpg'
+    link: atlanticRoad
   },
   {
     name: 'Галапагосские острова',
-    link: 'images/__item-4.jpg'
+    link: galapagosIslands
   },
   {
     name: 'Остров Эльютера',
-    link: 'images/__item-5.jpg'
+    link: eleutheraIsland
   },
   {
     name: 'Сейшельские острова',
-    link: 'images/__item-6.jpg'
+    link: seychelles
   }
 ];
 
