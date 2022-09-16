@@ -4,9 +4,17 @@ import { openPopup, closePopup, currentPopup, profileFormSubmit } from './modal.
 import { enableValidation } from './validate.js';
 import { nameInput, jobInput, profileName, profileDescription, profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard } from './variables.js';
 
+// настройка валидации
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__text-field',
+  submitButtonSelector: '.popup__button-save',
+  inputErrorClass: 'popup__text-field__error',
+}
+
 
 // Исполняемый код
-enableValidation();
+enableValidation(config);
 initialCards.forEach(function (card) {renderCard(card.name, card.link)});
 
 nameInput.value = profileName.textContent; 
