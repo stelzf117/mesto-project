@@ -49,7 +49,7 @@ function editingCard(nameImage, linkImage) {
   photoName.textContent = nameImage;
 
   trash.addEventListener('click', function() {trash.closest('.element').remove()});
-  heart.addEventListener('click', function() {heart.classList.toggle('element__heart_active');});
+  heart.addEventListener('click', function() {heart.classList.toggle('element__heart_active')});
   photoElement.addEventListener('click', function() {viewCard(nameImage, linkImage); openPopup(popupViewCard)});
   return cardElement;
 };
