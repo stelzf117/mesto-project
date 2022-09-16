@@ -6,7 +6,7 @@ function showInputError(formElement, inputElement, errorMessage, inputErrorClass
   inputElement.classList.add(inputErrorClass);
 };
 
-function hideInputError(formElement, inputElement) {
+function hideInputError(formElement, inputElement, inputErrorClass) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   errorElement.textContent = '';
   inputElement.classList.remove(inputErrorClass);
@@ -27,9 +27,10 @@ function checkInputValidity(formElement, inputElement, inputErrorClass) {
   };
 };
 
-function setEventListeners(formElement, popupInput, buttonElement, inputErrorClass) {
+function setEventListeners(formElement, popupInput, submitButtonSelector, inputErrorClass) {
   const inputList = Array.from(formElement.querySelectorAll(popupInput));
-  toggleButtonState(inputList, buttonElement)
+  const buttonElement = formElement.querySelector(submitButtonSelector);
+  toggleButtonState(inputList, buttonElement);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       checkInputValidity(formElement, inputElement, inputErrorClass);
@@ -40,13 +41,13 @@ function setEventListeners(formElement, popupInput, buttonElement, inputErrorCla
 
 function enableValidation(config) {
   const formList = Array.from(document.querySelectorAll(config.formSelector));
-  const buttonElement = document.querySelector(config.submitButtonSelector);
   formList.forEach((formElement) => {
+    const buttonElement = formElement.querySelector(config.submitButtonSelector);
     formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
       buttonElement.setAttribute('disabled', true);
     });
-    setEventListeners(formElement, config.inputSelector, buttonElement, config.inputErrorClass);
+    setEventListeners(formElement, config.inputSelector, config.submitButtonSelector, config.inputErrorClass);
   });
 };
 
@@ -58,9 +59,11 @@ function hasInvalidInput(inputList) {
 
 function toggleButtonState(inputList, buttonElement) {
   if(hasInvalidInput(inputList)) {
-    buttonElement.setAttribute('disabled', true)
+    buttonElement.setAttribute('disabled', true);
+    console.log(`button disabled ${buttonElement.id}`);
   }
   else {
     buttonElement.removeAttribute('disabled');
+    console.log(`button restored ${buttonElement.id}`)
   }
 }
