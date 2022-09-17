@@ -1,4 +1,5 @@
 import { viewCard, openPopup } from "./modal.js";
+import { buttonDisable  } from './utils.js';
 import { cardPlace, cardBlank, formElementAddCard, popupViewCard  } from './variables.js';
 export { initialCards, renderCard, addCard };
 
@@ -54,14 +55,14 @@ function editingCard(nameImage, linkImage) {
   return cardElement;
 };
 
-
 function renderCard(nameImage, linkImage) {
   cardPlace.prepend(editingCard(nameImage, linkImage));
 };
 
-function addCard() {
+function addCard(config) {
   const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value;
   const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
   renderCard(namePicture, linkPicture);
   formElementAddCard.reset();
+  buttonDisable(formElementAddCard, config.submitButtonSelector);
 };

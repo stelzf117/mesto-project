@@ -21,12 +21,7 @@
   background-color: #fff;
   outline: 1px solid rgba(0, 0, 0, 0.2);
   color: rgba(0, 0, 0, 0.2);
-}
-
-.popup__button-save:disabled:hover{
-  background-color: rgba(0, 0, 0, .8);
-  color: #fff;
-  outline: none;
+  cursor: default;
 }
 
 @media screen and (max-width: 540px) {

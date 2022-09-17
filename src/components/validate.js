@@ -1,4 +1,4 @@
-export { enableValidation };
+export { enableValidation, checkInputValidity };
 
 function showInputError(formElement, inputElement, errorMessage, inputErrorClass) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
@@ -42,11 +42,6 @@ function setEventListeners(formElement, popupInput, submitButtonSelector, inputE
 function enableValidation(config) {
   const formList = Array.from(document.querySelectorAll(config.formSelector));
   formList.forEach((formElement) => {
-    const buttonElement = formElement.querySelector(config.submitButtonSelector);
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      buttonElement.setAttribute('disabled', true);
-    });
     setEventListeners(formElement, config.inputSelector, config.submitButtonSelector, config.inputErrorClass);
   });
 };
@@ -60,10 +55,8 @@ function hasInvalidInput(inputList) {
 function toggleButtonState(inputList, buttonElement) {
   if(hasInvalidInput(inputList)) {
     buttonElement.setAttribute('disabled', true);
-    console.log(`button disabled ${buttonElement.id}`);
   }
   else {
     buttonElement.removeAttribute('disabled');
-    console.log(`button restored ${buttonElement.id}`)
   }
 }

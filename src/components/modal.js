@@ -1,8 +1,7 @@
-export { viewCard, openPopup, closePopup, currentPopup, profileFormSubmit};
-import { profileName, profileDescription, nameInput, jobInput, popupPicture, popupDescription } from './variables.js';
-
-
-let currentPopup; // текущий открытый попап
+export { viewCard, openPopup, closePopup, profileFormSubmit, resetProfileForm };
+import { checkInputValidity } from './validate.js';
+import { buttonDisable } from './utils.js';
+import { profileName, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupOpened, popupClose } from './variables.js';
 
 function viewCard(imageName, imageLink) {
   popupPicture.src = imageLink;
@@ -15,27 +14,37 @@ function profileFormSubmit () {
   profileDescription.textContent = jobInput.value;
 };
 
+function resetProfileForm(config, formElement) {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  formElement.reset();
+  nameInput.value = profileName.textContent; 
+  jobInput.value = profileDescription.textContent;
+  inputList.forEach((inputElement) => {
+    checkInputValidity(formElement, inputElement, config.inputErrorClass);
+  });
+  buttonDisable(formElement, config.submitButtonSelector);
+};
+
 function closeEscape(event) {
   if (event.key === 'Escape') {
-    closePopup(currentPopup);
+    closePopup(document.querySelector(`.${popupOpened}`));
   }
 };
 
 function closeClick(event) {
-  if(event.target.classList.contains('popup_opened') || event.target.classList.contains('popup__close')) {
-    closePopup(currentPopup);
+  if(event.target.classList.contains(popupOpened) || event.target.classList.contains(popupClose)) {
+    closePopup(event.currentTarget);
   }
 }
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  currentPopup = popup;
   document.addEventListener('keydown', closeEscape);
-  document.addEventListener('click', closeClick);
+  popup.addEventListener('click', closeClick);
 };
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closeEscape);
-  document.removeEventListener('click', closeClick);
+  popup.removeEventListener('click', closeClick);
 };
