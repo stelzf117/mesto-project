@@ -1,6 +1,6 @@
 import { viewCard, openPopup, clickButtonDelete } from "./modal.js";
-import { buttonDisable  } from './utils.js';
-import { deleteCard, likeCard, likeDeleteCard } from './api.js' ;
+import { buttonDisable } from './utils.js';
+import { likeCard, likeDeleteCard } from './api.js' ;
 import { cardPlace, cardBlank, formElementAddCard, popupViewCard, popupDeleteCard, buttonDeleteCard } from './variables.js';
 export { renderCard, addCard };
 
@@ -59,8 +59,8 @@ function renderCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiCon
 };
 
 function addCard(config, cardId, apiConfig) {
-  const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value; // пускай ему это передают T0D0
-  const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;// пускай ему это передают
+  const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value;
+  const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
   cardPlace.prepend(editingCard(namePicture, linkPicture, 0, true, true, cardId, apiConfig));
   formElementAddCard.reset();
   buttonDisable(formElementAddCard, config.submitButtonSelector);

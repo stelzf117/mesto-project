@@ -54,7 +54,7 @@ profileFormElement.addEventListener('submit', (evt) => {
 formElementAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
   isLoading(formEditAvatar, config.submitButtonSelector, true);
-  postNewCard(apiConfig, document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value) //T0D0 переделать все настройки в конфиг
+  postNewCard(apiConfig, document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value)
     .then((result) => addCard(config, result._id, apiConfig))
     .catch(err => console.log(err))
     .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
