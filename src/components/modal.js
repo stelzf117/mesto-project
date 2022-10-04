@@ -3,15 +3,17 @@ import { checkInputValidity } from './validate.js';
 import { buttonDisable } from './utils.js';
 import { profileName, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupOpened, popupClose } from './variables.js';
 
+
+
 function viewCard(imageName, imageLink) {
   popupPicture.src = imageLink;
   popupPicture.alt = imageName;
   popupDescription.textContent = imageName;
 };
 
-function profileFormSubmit () {
-  profileName.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
+function profileFormSubmit (newName, newDescription) {
+  profileName.textContent = newName;
+  profileDescription.textContent = newDescription;
 };
 
 function resetProfileForm(config, formElement) {
@@ -19,9 +21,7 @@ function resetProfileForm(config, formElement) {
   formElement.reset();
   nameInput.value = profileName.textContent; 
   jobInput.value = profileDescription.textContent;
-  inputList.forEach((inputElement) => {
-    checkInputValidity(formElement, inputElement, config.inputErrorClass);
-  });
+  inputList.forEach((inputElement) => {checkInputValidity(formElement, inputElement, config.inputErrorClass)});
   buttonDisable(formElement, config.submitButtonSelector);
 };
 

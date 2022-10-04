@@ -1,4 +1,4 @@
-export { nameInput, jobInput, profileName, profileDescription, profileFormElement, popupProfile, cardPlace, cardBlank, popupAddCard, formElementAddCard, popupViewCard, popupPicture, popupDescription, popupAddCardEdit, popupProfileEdit, popupOpened, popupClose };
+export { nameInput, jobInput, profileName, profileDescription, profileFormElement, popupProfile, cardPlace, cardBlank, popupAddCard, formElementAddCard, popupViewCard, popupPicture, popupDescription, popupAddCardEdit, popupProfileEdit, popupOpened, popupClose, avatar, popupEditAvatar, avatarEdit, formElementEditAvatar, formEditAvatar };
 
 // Переменные
 const popupProfileEdit = document.querySelector('.profile__edit');
@@ -10,6 +10,7 @@ const jobInput = profileFormElement.querySelector('.popup__text-field_type_statu
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 
+const avatarEdit = document.querySelector('.profile__avatar-conainer');
 const popupEditAvatar = document.querySelector('.popup__type_edit-avatar'); //аватар
 const avatar = document.querySelector('.profile__avatar');
 const formElementEditAvatar = document.querySelector('.popup__text-field_type_link-picture');

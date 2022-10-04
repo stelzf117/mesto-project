@@ -13,10 +13,12 @@
   </header>
 
   <section class="profile wrapper">
-    <button class="profile__avatar" type="button" aria-label="change avatar"></button>
+    <div class="profile__avatar-conainer">
+      <img class="profile__avatar" src="<%=require('./images/author.jpg')%>" alt="Аватар">
+    </div>
     <div class="profile__info">
-      <h1 class="profile__name">Жак-Ив Кусто</h1>
-      <p class="profile__description">Исследователь океана</p>
+      <h1 class="profile__name">Имя</h1>
+      <p class="profile__description">Статус</p>
       <button class="profile__edit" type="button" aria-label="edit information"></button>
     </div>
     <button class="profile__add" type="button" aria-label="add photo"></button>
@@ -48,7 +50,8 @@
       <button class="popup__close popup__close_type_edit-avatar" type="button" aria-label="close"></button>
       <h2 class="popup__title">Обновить аватар</h2>
       <form class="popup__form popup__form_type_avatar" method="get" name="avatar" novalidate>
-        <input class="popup__text-field popup__text-field_type_link-picture" type="text" placeholder="Ссылка на изображение">
+        <input class="popup__text-field popup__text-field_type_link-picture" type="url" placeholder="Ссылка на изображение" id="linkAvatarImage-input" required>
+        <span class="popup__input-error linkAvatarImage-input-error"></span>
         <button class="popup__button-save" type="submit">Сохранить</button>
       </form>
     </div>
@@ -61,7 +64,7 @@
       <form class="popup__form popup__form_type_add-card" method="get" name="addCard" novalidate>
           <input class="popup__text-field popup__text-field_type_picture-name" id="pictureName-input" type="text" placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-Z-А-Яа-яЁё\s]+$" data-error-message="Разрешены только латинские и кириллические символы, а также пробел и дефис" required>
           <span class="popup__input-error pictureName-input-error"></span>
-          <input class="popup__text-field popup__text-field_type_picture-link" id="linkCardImage-input" type="url" placeholder="Ссылка на картинку" required>
+          <input class="popup__text-field popup__text-field_type_picture-link" id="linkCardImage-input" type="url" placeholder="Ссылка на изображение" required>
           <span class="popup__input-error linkCardImage-input-error"></span>
           <button class="popup__button-save" type="submit">Сохранить</button>
       </form>
@@ -78,11 +81,14 @@
 
   <template id="card-blank">
     <article class="element">
-      <button class="element__trash" type="button"></button>
+      <button class="element__trash element__trash_disabled" type="button"></button>
       <img class="element__photo" src="<%=require('./images/no-image.jpg')%>" alt="">
       <div class="element__content">
         <h2 class="element__name"></h2>
-        <button class="element__heart" type="button" aria-label="like"></button>
+        <div class="element__hearts">
+          <button class="element__heart" type="button" aria-label="like"></button>
+          <p class="element__hearts-count"></p>
+        </div>
       </div>
      </article>
   </template>
