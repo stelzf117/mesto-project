@@ -1,7 +1,7 @@
 .popup__container {
   position: relative;
   background-color: #fff;
-  min-width: 282px;
+  min-width: 430px;
   max-width: 430px;
   border-radius: 10px;
   cursor: default;
@@ -11,5 +11,6 @@
   .popup__container {
     min-height: 322px;
     max-width: 282px;
+    min-width: 282px;
   }
 }

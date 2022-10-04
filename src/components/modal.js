@@ -1,7 +1,8 @@
-export { viewCard, openPopup, closePopup, profileFormSubmit, resetProfileForm, isLoading };
+export { viewCard, openPopup, closePopup, profileFormSubmit, resetProfileForm, isLoading, clickButtonDelete };
 import { checkInputValidity } from './validate.js';
 import { buttonDisable } from './utils.js';
-import { profileName, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupOpened, popupClose } from './variables.js';
+import { deleteCard } from './api.js';
+import { profileName, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupOpened, popupClose, popupDeleteCard } from './variables.js';
 
 
 
@@ -57,4 +58,11 @@ function isLoading(poupForm, submitButtonSelector, loading) {
   else {
     button.textContent = 'Сохранить'
   }
+}
+
+function clickButtonDelete(apiConfig, cardId, trash, buttonDeleteCard) {
+  deleteCard(apiConfig, cardId)
+    .then(() => trash.closest('.element').remove())
+    .then(() => closePopup(popupDeleteCard))
+    .then(() => buttonDeleteCard.removeEventListener('click', clickButtonDelete))
 }

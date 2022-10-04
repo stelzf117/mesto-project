@@ -1,7 +1,7 @@
-import { viewCard, openPopup } from "./modal.js";
+import { viewCard, openPopup, clickButtonDelete } from "./modal.js";
 import { buttonDisable  } from './utils.js';
-import { cardPlace, cardBlank, formElementAddCard, popupViewCard } from './variables.js';
 import { deleteCard, likeCard, likeDeleteCard } from './api.js' ;
+import { cardPlace, cardBlank, formElementAddCard, popupViewCard, popupDeleteCard, buttonDeleteCard } from './variables.js';
 export { renderCard, addCard };
 
 
@@ -46,8 +46,9 @@ function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiCo
   }
 
   trash.addEventListener('click', () => {
-    deleteCard(apiConfig, cardId)
-      .then(() => trash.closest('.element').remove())
+    openPopup(popupDeleteCard);
+    buttonDeleteCard.addEventListener('click', () => {
+      clickButtonDelete(apiConfig, cardId, trash, buttonDeleteCard)});
   });
   return cardElement;
 };

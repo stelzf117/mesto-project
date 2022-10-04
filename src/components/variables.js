@@ -1,4 +1,4 @@
-export { nameInput, jobInput, profileName, profileDescription, profileFormElement, popupProfile, cardPlace, cardBlank, popupAddCard, formElementAddCard, popupViewCard, popupPicture, popupDescription, popupAddCardEdit, popupProfileEdit, popupOpened, popupClose, avatar, popupEditAvatar, avatarEdit, formElementEditAvatar, formEditAvatar };
+export { nameInput, jobInput, profileName, profileDescription, profileFormElement, popupProfile, cardPlace, cardBlank, popupAddCard, formElementAddCard, popupViewCard, popupPicture, popupDescription, popupAddCardEdit, popupProfileEdit, popupOpened, popupClose, avatar, popupEditAvatar, avatarEdit, formElementEditAvatar, formEditAvatar, popupDeleteCard, buttonDeleteCard };
 
 // Переменные
 const popupProfileEdit = document.querySelector('.profile__edit');
@@ -24,6 +24,9 @@ const formElementAddCard = popupAddCard.querySelector('.popup__form_type_add-car
 const popupViewCard = document.querySelector('.popup__type_view-card');
 const popupPicture = popupViewCard.querySelector('.popup__picture');
 const popupDescription =  popupViewCard.querySelector('.popup__description');
+
+const popupDeleteCard = document.querySelector('.popup__type_delete-card');
+const buttonDeleteCard = document.querySelector('.popup__button-delete-card');
 
 const popupOpened = 'popup_opened';
 const popupClose = 'popup__close';
