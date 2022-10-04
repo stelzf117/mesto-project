@@ -1,4 +1,4 @@
-export { viewCard, openPopup, closePopup, profileFormSubmit, resetProfileForm };
+export { viewCard, openPopup, closePopup, profileFormSubmit, resetProfileForm, isLoading };
 import { checkInputValidity } from './validate.js';
 import { buttonDisable } from './utils.js';
 import { profileName, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupOpened, popupClose } from './variables.js';
@@ -48,3 +48,13 @@ function closePopup(popup) {
   document.removeEventListener('keydown', closeEscape);
   popup.removeEventListener('click', closeClick);
 };
+
+function isLoading(poupForm, submitButtonSelector, loading) {
+  const button = poupForm.querySelector(submitButtonSelector);
+  if(loading) {
+    button.textContent = 'Сохранение...'
+  }
+  else {
+    button.textContent = 'Сохранить'
+  }
+}

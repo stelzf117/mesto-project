@@ -1,6 +1,6 @@
 import '../pages/index.css';
 import { renderCard, addCard } from './card.js';
-import { openPopup, closePopup, profileFormSubmit, resetProfileForm } from './modal.js';
+import { openPopup, closePopup, profileFormSubmit, resetProfileForm, isLoading } from './modal.js';
 import { enableValidation } from './validate.js';
 import { changeProfileInfo, changeAvatar } from './utils.js';
 import { requestNameBio, requestCards, editProfile, postNewCard, newAvatar } from './api.js';
@@ -33,25 +33,31 @@ popupProfileEdit.addEventListener('click', () => {
 
 formEditAvatar.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  isLoading(formEditAvatar, config.submitButtonSelector, true);
   newAvatar(apiConfig, formElementEditAvatar.value)
     .then(() => changeAvatar(avatar, formElementEditAvatar.value))
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false))
   closePopup(popupEditAvatar);
 })
 
 profileFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  isLoading(formEditAvatar, config.submitButtonSelector, true);
   editProfile(apiConfig, nameInput.value, jobInput.value)
     .then(() => {profileFormSubmit(nameInput.value, jobInput.value)})
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
   closePopup(popupProfile);
 });
 
 formElementAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  isLoading(formEditAvatar, config.submitButtonSelector, true);
   postNewCard(apiConfig, document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value) //T0D0 переделать все настройки в конфиг
     .then((result) => addCard(config, result._id, apiConfig))
-    .catch(err => console.log(err));
+    .catch(err => console.log(err))
+    .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
   closePopup(popupAddCard);
 });
 
