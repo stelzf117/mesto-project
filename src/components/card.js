@@ -1,8 +1,8 @@
-import { viewCard, openPopup, clickButtonDelete } from "./modal.js";
-import { buttonDisable } from './utils.js';
+import { openPopup } from "./modal.js";
 import { likeCard, likeDeleteCard } from './api.js' ;
-import { cardPlace, cardBlank, formElementAddCard, popupViewCard, popupDeleteCard, buttonDeleteCard } from './variables.js';
-export { renderCard, addCard };
+import { cardPlace, cardBlank, popupViewCard, popupDeleteCard, buttonDeleteCard } from './variables.js';
+import { viewCard, clickButtonDelete } from './index.js' ;
+export { renderCard, editingCard };
 
 
 function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiConfig) {
@@ -21,13 +21,17 @@ function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiCo
   heart.addEventListener('click', () => {
     if(heart.classList.contains('element__heart_active')) {
       likeDeleteCard(apiConfig, cardId)
-        .then(res => heartsCount.textContent = res.likes.length)
-        .then(() => heart.classList.remove('element__heart_active'));
+        .then(res => {
+          heartsCount.textContent = res.likes.length;
+          heart.classList.remove('element__heart_active');
+        });
     }
     else {
       likeCard(apiConfig, cardId)
-        .then(res => heartsCount.textContent = res.likes.length)
-        .then(() => heart.classList.add('element__heart_active'));
+        .then(res => {
+          heartsCount.textContent = res.likes.length;
+          heart.classList.add('element__heart_active')
+        });
     }
   });
 
@@ -56,12 +60,4 @@ function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiCo
 
 function renderCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiConfig) {
   cardPlace.append(editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiConfig));
-};
-
-function addCard(config, cardId, apiConfig) {
-  const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value;
-  const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
-  cardPlace.prepend(editingCard(namePicture, linkPicture, 0, true, true, cardId, apiConfig));
-  formElementAddCard.reset();
-  buttonDisable(formElementAddCard, config.submitButtonSelector);
 };

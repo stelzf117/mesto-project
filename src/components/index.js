@@ -1,11 +1,11 @@
 import '../pages/index.css';
-import { renderCard, addCard } from './card.js';
-import { openPopup, closePopup, profileFormSubmit, resetProfileForm, isLoading } from './modal.js';
-import { enableValidation } from './validate.js';
-import { changeProfileInfo, changeAvatar } from './utils.js';
-import { requestNameBio, requestCards, editProfile, postNewCard, newAvatar } from './api.js';
-import { profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, profileDescription, nameInput, jobInput, popupEditAvatar, avatarEdit, avatar, formElementEditAvatar, formEditAvatar } from './variables.js';
-
+import { renderCard, editingCard } from './card.js';
+import { openPopup, closePopup, isLoading } from './modal.js';
+import { enableValidation, checkInputValidity } from './validate.js';
+import { changeProfileInfo, changeAvatar, buttonDisable } from './utils.js';
+import { requestNameBio, requestCards, editProfile, postNewCard, newAvatar, deleteCard } from './api.js';
+import { profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, popupEditAvatar, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace } from './variables.js';
+export { viewCard, profileFormSubmit, resetProfileForm, clickButtonDelete };
 
 // настройки запросов
 const apiConfig = {
@@ -23,6 +23,42 @@ const config = {
   inputErrorClass: 'popup__text-field__error',
 }
 
+// Функции
+function viewCard(imageName, imageLink) {
+  popupPicture.src = imageLink;
+  popupPicture.alt = imageName;
+  popupDescription.textContent = imageName;
+};
+
+function profileFormSubmit (newName, newDescription) {
+  profileName.textContent = newName;
+  profileDescription.textContent = newDescription;
+};
+
+function resetProfileForm(config, formElement) {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  formElement.reset();
+  nameInput.value = profileName.textContent; 
+  jobInput.value = profileDescription.textContent;
+  inputList.forEach((inputElement) => {checkInputValidity(formElement, inputElement, config.inputErrorClass)});
+  buttonDisable(formElement, config.submitButtonSelector);
+};
+
+function clickButtonDelete(apiConfig, cardId, trash, buttonDeleteCard) {
+  deleteCard(apiConfig, cardId)
+    .then(() => trash.closest('.element').remove())
+    .then(() => closePopup(popupDeleteCard))
+    .then(() => buttonDeleteCard.removeEventListener('click', clickButtonDelete))
+}
+
+function addCard(config, cardId, apiConfig) {
+  const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value;
+  const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
+  cardPlace.prepend(editingCard(namePicture, linkPicture, 0, true, true, cardId, apiConfig));
+  formElementAddCard.reset();
+  buttonDisable(formElementAddCard, config.submitButtonSelector);
+};
+
 // Слушатели
 popupAddCardEdit.addEventListener('click', () => {openPopup(popupAddCard)});
 avatarEdit.addEventListener('click', () => {openPopup(popupEditAvatar)});
@@ -36,19 +72,17 @@ formEditAvatar.addEventListener('submit', (evt) => {
   isLoading(formEditAvatar, config.submitButtonSelector, true);
   newAvatar(apiConfig, formElementEditAvatar.value)
     .then(() => changeAvatar(avatar, formElementEditAvatar.value))
-    .catch(err => console.log(err))
-    .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false))
-  closePopup(popupEditAvatar);
+    .then(() =>   closePopup(popupEditAvatar))
+    .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
 })
 
 profileFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   isLoading(formEditAvatar, config.submitButtonSelector, true);
   editProfile(apiConfig, nameInput.value, jobInput.value)
-    .then(() => {profileFormSubmit(nameInput.value, jobInput.value)})
-    .catch(err => console.log(err))
+    .then(() => profileFormSubmit(nameInput.value, jobInput.value))
+    .then(() => closePopup(popupProfile))
     .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
-  closePopup(popupProfile);
 });
 
 formElementAddCard.addEventListener('submit', (evt) => {
@@ -56,9 +90,8 @@ formElementAddCard.addEventListener('submit', (evt) => {
   isLoading(formEditAvatar, config.submitButtonSelector, true);
   postNewCard(apiConfig, document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value)
     .then((result) => addCard(config, result._id, apiConfig))
-    .catch(err => console.log(err))
+    .then(() =>   closePopup(popupAddCard))
     .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
-  closePopup(popupAddCard);
 });
 
 
@@ -66,13 +99,9 @@ let userId; // сюда записывается наш ID
 // Исполняемый код
 enableValidation(config);
 
-requestNameBio(apiConfig)
-  .then(data => {
-    changeProfileInfo(profileName, data.name, profileDescription, data.about, avatar, data.avatar);
-    userId = data._id;
+Promise.all([requestNameBio(apiConfig), requestCards(apiConfig)])
+  .then(([userData, cardsData]) => {
+    changeProfileInfo(profileName, userData.name, profileDescription, userData.about, avatar, userData.avatar);
+    userId = userData._id;
+    cardsData.forEach(item => {renderCard(item.name, item.link, item.likes, item.owner._id, userId, item._id, apiConfig)});
   })
-  .catch(err => console.log(err));
-
-requestCards(apiConfig)
-  .then(data => {data.forEach(item => {renderCard(item.name, item.link, item.likes, item.owner._id, userId, item._id, apiConfig)})})
-  .catch(err => console.log(err));

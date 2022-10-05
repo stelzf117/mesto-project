@@ -1,30 +1,5 @@
-export { viewCard, openPopup, closePopup, profileFormSubmit, resetProfileForm, isLoading, clickButtonDelete };
-import { checkInputValidity } from './validate.js';
-import { buttonDisable } from './utils.js';
-import { deleteCard } from './api.js';
-import { profileName, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupOpened, popupClose, popupDeleteCard } from './variables.js';
-
-
-
-function viewCard(imageName, imageLink) {
-  popupPicture.src = imageLink;
-  popupPicture.alt = imageName;
-  popupDescription.textContent = imageName;
-};
-
-function profileFormSubmit (newName, newDescription) {
-  profileName.textContent = newName;
-  profileDescription.textContent = newDescription;
-};
-
-function resetProfileForm(config, formElement) {
-  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
-  formElement.reset();
-  nameInput.value = profileName.textContent; 
-  jobInput.value = profileDescription.textContent;
-  inputList.forEach((inputElement) => {checkInputValidity(formElement, inputElement, config.inputErrorClass)});
-  buttonDisable(formElement, config.submitButtonSelector);
-};
+export { openPopup, closePopup, isLoading };
+import { popupOpened, popupClose } from './variables.js';
 
 function closeEscape(event) {
   if (event.key === 'Escape') {
@@ -58,11 +33,4 @@ function isLoading(poupForm, submitButtonSelector, loading) {
   else {
     button.textContent = 'Сохранить'
   }
-}
-
-function clickButtonDelete(apiConfig, cardId, trash, buttonDeleteCard) {
-  deleteCard(apiConfig, cardId)
-    .then(() => trash.closest('.element').remove())
-    .then(() => closePopup(popupDeleteCard))
-    .then(() => buttonDeleteCard.removeEventListener('click', clickButtonDelete))
 }
