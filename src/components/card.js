@@ -24,14 +24,16 @@ function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiCo
         .then(res => {
           heartsCount.textContent = res.likes.length;
           heart.classList.remove('element__heart_active');
-        });
+        })
+        .catch(err => console.log(err));
     }
     else {
       likeCard(apiConfig, cardId)
         .then(res => {
           heartsCount.textContent = res.likes.length;
           heart.classList.add('element__heart_active')
-        });
+        })
+        .catch(err => console.log(err));
     }
   });
 

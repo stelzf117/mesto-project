@@ -49,6 +49,7 @@ function clickButtonDelete(apiConfig, cardId, trash, buttonDeleteCard) {
     .then(() => trash.closest('.element').remove())
     .then(() => closePopup(popupDeleteCard))
     .then(() => buttonDeleteCard.removeEventListener('click', clickButtonDelete))
+    .catch(err => console.log(err))
 }
 
 function addCard(config, cardId, apiConfig) {
@@ -73,6 +74,7 @@ formEditAvatar.addEventListener('submit', (evt) => {
   newAvatar(apiConfig, formElementEditAvatar.value)
     .then(() => changeAvatar(avatar, formElementEditAvatar.value))
     .then(() =>   closePopup(popupEditAvatar))
+    .catch(err => console.log(err))
     .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
 })
 
@@ -82,6 +84,7 @@ profileFormElement.addEventListener('submit', (evt) => {
   editProfile(apiConfig, nameInput.value, jobInput.value)
     .then(() => profileFormSubmit(nameInput.value, jobInput.value))
     .then(() => closePopup(popupProfile))
+    .catch(err => console.log(err))
     .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
 });
 
@@ -91,6 +94,7 @@ formElementAddCard.addEventListener('submit', (evt) => {
   postNewCard(apiConfig, document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value)
     .then((result) => addCard(config, result._id, apiConfig))
     .then(() =>   closePopup(popupAddCard))
+    .catch(err => console.log(err))
     .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
 });
 
@@ -103,5 +107,6 @@ Promise.all([requestNameBio(apiConfig), requestCards(apiConfig)])
   .then(([userData, cardsData]) => {
     changeProfileInfo(profileName, userData.name, profileDescription, userData.about, avatar, userData.avatar);
     userId = userData._id;
-    cardsData.forEach(item => {renderCard(item.name, item.link, item.likes, item.owner._id, userId, item._id, apiConfig)});
+    cardsData.forEach(item => {renderCard(item.name, item.link, item.likes, item.owner._id, userId, item._id, apiConfig)})
+  .catch(err => console.log(err));
   })
