@@ -3,18 +3,11 @@ import { renderCard, editingCard } from './card.js';
 import { openPopup, closePopup, isLoading } from './modal.js';
 import { enableValidation, checkInputValidity } from './validate.js';
 import { changeProfileInfo, changeAvatar, buttonDisable } from './utils.js';
-import { requestNameBio, requestCards, editProfile, postNewCard, newAvatar, deleteCard } from './api.js';
+import { api } from './api.js';
 import { profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, popupEditAvatar, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace } from './variables.js';
-export { viewCard, profileFormSubmit, resetProfileForm, clickButtonDelete };
 
-// настройки запросов
-const apiConfig = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-14',
-  headers: {
-    authorization: 'a75084ed-65ff-46b2-92ef-67cae42fb5b5',
-    'Content-Type': 'application/json'
-  }
-}
+//console.log(api.requestNameBio());
+
 // настройки валидации
 const config = {
   formSelector: '.popup__form',
@@ -44,18 +37,18 @@ function resetProfileForm(config, formElement) {
   buttonDisable(formElement, config.submitButtonSelector);
 };
 
-function clickButtonDelete(apiConfig, cardId, trash, buttonDeleteCard) {
-  deleteCard(apiConfig, cardId)
+function clickButtonDelete(cardId, trash, buttonDeleteCard) {
+  api.deleteCard(cardId)
     .then(() => trash.closest('.element').remove())
     .then(() => closePopup(popupDeleteCard))
     .then(() => buttonDeleteCard.removeEventListener('click', clickButtonDelete))
     .catch(err => console.log(err))
 }
 
-function addCard(config, cardId, apiConfig) {
+function addCard(config, cardId) {
   const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value;
   const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
-  cardPlace.prepend(editingCard(namePicture, linkPicture, 0, true, true, cardId, apiConfig));
+  cardPlace.prepend(editingCard(namePicture, linkPicture, 0, true, true, cardId));
   formElementAddCard.reset();
   buttonDisable(formElementAddCard, config.submitButtonSelector);
 };
@@ -71,7 +64,7 @@ popupProfileEdit.addEventListener('click', () => {
 formEditAvatar.addEventListener('submit', (evt) => {
   evt.preventDefault();
   isLoading(formEditAvatar, config.submitButtonSelector, true);
-  newAvatar(apiConfig, formElementEditAvatar.value)
+  api.newAvatar(formElementEditAvatar.value)
     .then(() => changeAvatar(avatar, formElementEditAvatar.value))
     .then(() =>   closePopup(popupEditAvatar))
     .catch(err => console.log(err))
@@ -81,7 +74,7 @@ formEditAvatar.addEventListener('submit', (evt) => {
 profileFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   isLoading(formEditAvatar, config.submitButtonSelector, true);
-  editProfile(apiConfig, nameInput.value, jobInput.value)
+  api.editProfile(nameInput.value, jobInput.value)
     .then(() => profileFormSubmit(nameInput.value, jobInput.value))
     .then(() => closePopup(popupProfile))
     .catch(err => console.log(err))
@@ -91,8 +84,8 @@ profileFormElement.addEventListener('submit', (evt) => {
 formElementAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
   isLoading(formEditAvatar, config.submitButtonSelector, true);
-  postNewCard(apiConfig, document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value)
-    .then((result) => addCard(config, result._id, apiConfig))
+  api.postNewCard(document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value)
+    .then((result) => addCard(config, result._id))
     .then(() =>   closePopup(popupAddCard))
     .catch(err => console.log(err))
     .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
@@ -103,10 +96,12 @@ let userId; // сюда записывается наш ID
 // Исполняемый код
 enableValidation(config);
 
-Promise.all([requestNameBio(apiConfig), requestCards(apiConfig)])
+Promise.all([api.requestNameBio(), api.requestCards()])
   .then(([userData, cardsData]) => {
     changeProfileInfo(profileName, userData.name, profileDescription, userData.about, avatar, userData.avatar);
     userId = userData._id;
-    cardsData.forEach(item => {renderCard(item.name, item.link, item.likes, item.owner._id, userId, item._id, apiConfig)})
-  .catch(err => console.log(err));
+    cardsData.forEach(item => {renderCard(item.name, item.link, item.likes, item.owner._id, userId, item._id)})
   })
+  .catch(err => console.log(err));
+
+export { viewCard, profileFormSubmit, resetProfileForm, clickButtonDelete };
