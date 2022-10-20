@@ -1,11 +1,11 @@
 import { openPopup } from "./modal.js";
-import { likeCard, likeDeleteCard } from './api.js' ;
+import { api } from './api.js';
 import { cardPlace, cardBlank, popupViewCard, popupDeleteCard, buttonDeleteCard } from './variables.js';
-import { viewCard, clickButtonDelete } from './index.js' ;
+import { viewCard, clickButtonDelete } from './index.js';
 export { renderCard, editingCard };
 
 
-function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiConfig) {
+function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId) {
   const cardElement = cardBlank.querySelector('.element').cloneNode(true);
   const photoElement = cardElement.querySelector('.element__photo');
   const photoName = cardElement.querySelector('.element__name');
@@ -16,11 +16,11 @@ function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiCo
   photoElement.src = linkImage;
   photoElement.setAttribute('alt', nameImage);
   photoName.textContent = nameImage;
-  photoElement.addEventListener('click', () => {viewCard(nameImage, linkImage); openPopup(popupViewCard)});
-  
+  photoElement.addEventListener('click', () => { viewCard(nameImage, linkImage); openPopup(popupViewCard) });
+
   heart.addEventListener('click', () => {
-    if(heart.classList.contains('element__heart_active')) {
-      likeDeleteCard(apiConfig, cardId)
+    if (heart.classList.contains('element__heart_active')) {
+      api.likeDeleteCard(cardId)
         .then(res => {
           heartsCount.textContent = res.likes.length;
           heart.classList.remove('element__heart_active');
@@ -28,7 +28,7 @@ function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiCo
         .catch(err => console.log(err));
     }
     else {
-      likeCard(apiConfig, cardId)
+      api.likeCard(cardId)
         .then(res => {
           heartsCount.textContent = res.likes.length;
           heart.classList.add('element__heart_active')
@@ -40,26 +40,27 @@ function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiCo
   if (likes.length) {
     heartsCount.textContent = likes.length;
     likes.find(item => {
-      if(item._id === userId) {
+      if (item._id === userId) {
         heart.classList.add('element__heart_active')
       }
     })
   }
   else heartsCount.textContent = '0';
 
-  if(ownerId === userId) {
+  if (ownerId === userId) {
     trash.classList.remove('element__trash_disabled');
   }
 
   trash.addEventListener('click', () => {
     openPopup(popupDeleteCard);
     buttonDeleteCard.addEventListener('click', () => {
-      clickButtonDelete(apiConfig, cardId, trash, buttonDeleteCard)});
+      clickButtonDelete(cardId, trash, buttonDeleteCard)
+    });
   });
   return cardElement;
 };
 
 
-function renderCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiConfig) {
-  cardPlace.append(editingCard(nameImage, linkImage, likes, ownerId, userId, cardId, apiConfig));
+function renderCard(nameImage, linkImage, likes, ownerId, userId, cardId) {
+  cardPlace.append(editingCard(nameImage, linkImage, likes, ownerId, userId, cardId));
 };
