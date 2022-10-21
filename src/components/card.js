@@ -1,11 +1,10 @@
 import { openPopup } from "./modal.js";
 import { api } from './api.js';
-import { cardPlace, cardBlank, popupViewCard, popupDeleteCard, buttonDeleteCard } from './variables.js';
-import { viewCard, clickButtonDelete } from './index.js';
-export { renderCard, editingCard };
+import { cardPlace, cardBlank, popupViewCard, popupDeleteCard, buttonDeleteCard } from '../utils/constants.js';
+import { viewCard, clickButtonDelete } from '../pages/index.js';
 
 
-function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId) {
+export function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId) {
   const cardElement = cardBlank.querySelector('.element').cloneNode(true);
   const photoElement = cardElement.querySelector('.element__photo');
   const photoName = cardElement.querySelector('.element__name');
@@ -61,6 +60,6 @@ function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId) {
 };
 
 
-function renderCard(nameImage, linkImage, likes, ownerId, userId, cardId) {
+export function renderCard(nameImage, linkImage, likes, ownerId, userId, cardId) {
   cardPlace.append(editingCard(nameImage, linkImage, likes, ownerId, userId, cardId));
 };

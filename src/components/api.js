@@ -1,4 +1,5 @@
-// настройки запросов
+export { api };
+
 const apiConfig = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-14',
   headers: {
@@ -86,5 +87,3 @@ class Api {
 }
 
 const api = new Api(apiConfig);
-
-export { api };
