@@ -1,4 +1,3 @@
-/* import { nameInput } from '../utils/constants.js'; */
 export { FormValidator };
 
 class FormValidator {
@@ -12,12 +11,12 @@ class FormValidator {
 
   _enableValidation(config) {
     const formList = Array.from(document.querySelectorAll(this._formSelector));
-    formList.forEach((formEl) => {
-      setEventListeners(formEl, this._inputSelector, this._submitButtonSelector, this._inputErrorClass);
+    formList.forEach((element) => {
+      setEventListeners(element, this._inputSelector, this._submitButtonSelector, this._inputErrorClass);
     });
   }
 
-  checkInputValidity(formElement, inputElement, inputErrorClass) {
+  _checkInputValidity(formElement, inputElement, inputErrorClass) {
     if (inputElement.validity.patternMismatch) {
       inputElement.setCustomValidity(inputElement.dataset.errorMessage);
     }
@@ -32,19 +31,19 @@ class FormValidator {
     };
   }
 
-  showInputError(formElement, inputElement, errorMessage, inputErrorClass) {
+  _showInputError(formElement, inputElement, errorMessage, inputErrorClass) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     errorElement.textContent = errorMessage;
     inputElement.classList.add(inputErrorClass);
   }
 
-  hideInputError(formElement, inputElement, inputErrorClass) {
+  _hideInputError(formElement, inputElement, inputErrorClass) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     errorElement.textContent = '';
     inputElement.classList.remove(inputErrorClass);
   }
 
-  setEventListeners(formElement, popupInput, submitButtonSelector, inputErrorClass) {
+  _setEventListeners(formElement, popupInput, submitButtonSelector, inputErrorClass) {
     const inputList = Array.from(formElement.querySelectorAll(popupInput));
     const buttonElement = formElement.querySelector(submitButtonSelector);
     toggleButtonState(inputList, buttonElement);
@@ -56,13 +55,13 @@ class FormValidator {
     });
   }
 
-  hasInvalidInput(inputList) {
+  _hasInvalidInput(inputList) {
     return inputList.some((inputElement) => {
       return !inputElement.validity.valid
     });
   }
 
-  toggleButtonState(inputList, buttonElement) {
+  _toggleButtonState(inputList, buttonElement) {
     if (hasInvalidInput(inputList)) {
       buttonElement.setAttribute('disabled', true);
     }
@@ -132,5 +131,3 @@ function toggleButtonState(inputList, buttonElement) {
     buttonElement.removeAttribute('disabled');
   }
 }
-
-/* const formValidator = new FormValidator(config, nameInput); */

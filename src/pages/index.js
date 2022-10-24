@@ -1,7 +1,7 @@
 import './index.css';
 // import { renderCard, editingCard } from '../components/card.js';
 import { openPopup, closePopup, isLoading } from '../components/modal.js';
-import { enableValidation, checkInputValidity, formValidator } from '../components/validate.js';
+import { enableValidation, checkInputValidity } from '../components/validate.js';
 import { changeProfileInfo, changeAvatar, buttonDisable } from '../utils/utils.js';
 import { api } from '../components/api.js';
 import { profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, popupEditAvatar, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace, cardBlank } from '../utils/constants.js';
@@ -33,8 +33,8 @@ export function resetProfileForm(config, formElement) {
   formElement.reset();
   nameInput.value = profileName.textContent; 
   jobInput.value = profileDescription.textContent;
-  inputList.forEach((inputElement) => {checkInputValidity(formElement, inputElement, validationConfig.inputErrorClass)});
-  buttonDisable(formElement, validationConfig.submitButtonSelector);
+  inputList.forEach((inputElement) => {checkInputValidity(formElement, inputElement, config.inputErrorClass)});
+  buttonDisable(formElement, config.submitButtonSelector);
 };
 
 export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
@@ -45,7 +45,7 @@ export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
     .catch(err => console.log(err))
 }
 
-function addCard(validationConfig, cardId) {
+function addCard(config, cardId) {
   const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value;
   const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
   const item = {
@@ -58,53 +58,52 @@ function addCard(validationConfig, cardId) {
   const newCard = new Card({ item }, cardBlank, true);
   cardPlace.prepend(newCard.returnCard())
   formElementAddCard.reset();
-  buttonDisable(formElementAddCard, validationConfig.submitButtonSelector);
+  buttonDisable(formElementAddCard, config.submitButtonSelector);
 };
 
 // Слушатели
 popupAddCardEdit.addEventListener('click', () => {openPopup(popupAddCard)});
 avatarEdit.addEventListener('click', () => {openPopup(popupEditAvatar)});
 popupProfileEdit.addEventListener('click', () => {
-  resetProfileForm(validationConfig, profileFormElement);
+  resetProfileForm(config, profileFormElement);
   openPopup(popupProfile);
 });
 
 formEditAvatar.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
+  isLoading(formEditAvatar, config.submitButtonSelector, true);
   api.newAvatar(formElementEditAvatar.value)
     .then(() => changeAvatar(avatar, formElementEditAvatar.value))
     .then(() =>   closePopup(popupEditAvatar))
     .catch(err => console.log(err))
-    .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
+    .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
 })
 
 profileFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
+  isLoading(formEditAvatar, config.submitButtonSelector, true);
   api.editProfile(nameInput.value, jobInput.value)
     .then(() => profileFormSubmit(nameInput.value, jobInput.value))
     .then(() => closePopup(popupProfile))
     .catch(err => console.log(err))
-    .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
+    .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
 });
 
 formElementAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
+  isLoading(formEditAvatar, config.submitButtonSelector, true);
   api.postNewCard(document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value)
     .then((result) => addCard(config, result._id))
     .then(() => closePopup(popupAddCard))
     .catch(err => console.log(err))
-    .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
+    .finally(() => isLoading(formEditAvatar, config.submitButtonSelector, false));
 });
 
 
 
 let userId; // сюда записывается наш ID
 // Исполняемый код
-enableValidation(validationConfig);
-//formValidator.enableValidation();
+enableValidation(config);
 
 Promise.all([api.requestNameBio(), api.requestCards()])
   .then(([userData, cardsData]) => {
