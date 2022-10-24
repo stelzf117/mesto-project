@@ -1,3 +1,4 @@
+
 export function enableValidation(config) {
   const formList = Array.from(document.querySelectorAll(config.formSelector));
   formList.forEach((formElement) => {
@@ -8,11 +9,11 @@ export function enableValidation(config) {
 export function checkInputValidity(formElement, inputElement, inputErrorClass) {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-  } 
+  }
   else {
     inputElement.setCustomValidity('');
-  } 
-  if(!inputElement.validity.valid) {
+  }
+  if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage, inputErrorClass);
   }
   else {
@@ -51,7 +52,7 @@ function hasInvalidInput(inputList) {
 };
 
 function toggleButtonState(inputList, buttonElement) {
-  if(hasInvalidInput(inputList)) {
+  if (hasInvalidInput(inputList)) {
     buttonElement.setAttribute('disabled', true);
   }
   else {
