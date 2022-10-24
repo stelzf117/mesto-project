@@ -1,3 +1,5 @@
+import { api } from "./api.js";
+
 export class Card {
   constructor({ item }, cardBlank, userId) {
 // Селекторы
@@ -47,12 +49,18 @@ export class Card {
 
     this._heart.addEventListener('click', () => {
       if(this._heart.classList.contains('element__heart_active')) {
-        console.log('отправка запроса на сервер');
-        this._heart.classList.remove('element__heart_active');
+        api.likeDeleteCard(this._cardId)
+          .then(res => {
+            this._heartsCount.textContent = res.likes.length;
+            this._heart.classList.remove('element__heart_active');
+          })
       }
       else {
-        console.log('отправка запроса на сервер')
-        this._heart.classList.add('element__heart_active');
+        api.likeCard(this._cardId)
+          .then(res => {
+            this._heartsCount.textContent = res.likes.length;
+            this._heart.classList.add('element__heart_active');
+          })
       }
     })
 
