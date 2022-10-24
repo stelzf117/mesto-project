@@ -27,3 +27,10 @@ export const buttonDeleteCard = document.querySelector('.popup__button-delete-ca
 
 export const popupOpened = 'popup_opened';
 export const popupClose = 'popup__close';
+
+export const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__text-field',
+  submitButtonSelector: '.popup__button-save',
+  inputErrorClass: 'popup__text-field__error',
+}
