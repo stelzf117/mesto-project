@@ -7,6 +7,16 @@ import { api } from '../components/api.js';
 import { profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, popupEditAvatar, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace, cardBlank } from '../utils/constants.js';
 
 import { Card } from '../components/newCard.js'; //как только newCard будет готов переименовать в card.js
+import { Section } from '../components/section.js';
+
+const cardsList = new Section({
+  array: messageList,
+  renderer: (messageItem) => {
+
+  }
+  },
+  cardListSection
+)
 
 // настройки валидации
 const config = {
