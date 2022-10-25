@@ -1,60 +1,65 @@
-export function enableValidation(config) {
-  const formList = Array.from(document.querySelectorAll(config.formSelector));
-  formList.forEach((formElement) => {
-    setEventListeners(formElement, config.inputSelector, config.submitButtonSelector, config.inputErrorClass);
-  });
-};
+export { FormValidator };
 
-export function checkInputValidity(formElement, inputElement, inputErrorClass) {
-  if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-  } 
-  else {
-    inputElement.setCustomValidity('');
-  } 
-  if(!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage, inputErrorClass);
+class FormValidator {
+  constructor(config, formElement) {
+    this._formElement = formElement;
+    this._formSelector = config.formSelector;
+    this._inputSelector = config.inputSelector;
+    this._submitButtonSelector = config.submitButtonSelector;
+    this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
+    this._inputErrorClass = config.inputErrorClass;
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
   }
-  else {
-    hideInputError(formElement, inputElement, inputErrorClass);
-  };
-};
 
-function showInputError(formElement, inputElement, errorMessage, inputErrorClass) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  errorElement.textContent = errorMessage;
-  inputElement.classList.add(inputErrorClass);
-};
-
-function hideInputError(formElement, inputElement, inputErrorClass) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  errorElement.textContent = '';
-  inputElement.classList.remove(inputErrorClass);
-};
-
-function setEventListeners(formElement, popupInput, submitButtonSelector, inputErrorClass) {
-  const inputList = Array.from(formElement.querySelectorAll(popupInput));
-  const buttonElement = formElement.querySelector(submitButtonSelector);
-  toggleButtonState(inputList, buttonElement);
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', () => {
-      checkInputValidity(formElement, inputElement, inputErrorClass);
-      toggleButtonState(inputList, buttonElement);
+  enableValidation() {
+    this._toggleButtonState();
+    this._inputList.forEach((inputElement) => {
+      inputElement.addEventListener('input', () => {
+        this.checkInputValidity(inputElement);
+        this._toggleButtonState();
+      });
     });
-  });
-};
-
-function hasInvalidInput(inputList) {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid
-  });
-};
-
-function toggleButtonState(inputList, buttonElement) {
-  if(hasInvalidInput(inputList)) {
-    buttonElement.setAttribute('disabled', true);
   }
-  else {
-    buttonElement.removeAttribute('disabled');
+
+  checkInputValidity(inputElement) {
+    if (inputElement.validity.patternMismatch) {
+      inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+    }
+    else {
+      inputElement.setCustomValidity('');
+    }
+    if (!inputElement.validity.valid) {
+      this._showInputError(inputElement, inputElement.validationMessage);
+    }
+    else {
+      this._hideInputError(inputElement);
+    };
   }
-}
+
+  _showInputError(inputElement, errorMessage) {
+    const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+    errorElement.textContent = errorMessage;
+    inputElement.classList.add(this._inputErrorClass);
+  }
+
+  _hideInputError(inputElement) {
+    const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+    errorElement.textContent = '';
+    inputElement.classList.remove(this._inputErrorClass);
+  }
+
+  _hasInvalidInput() {
+    return this._inputList.some((inputElement) => {
+      return !inputElement.validity.valid
+    });
+  }
+
+  _toggleButtonState() {
+    if (this._hasInvalidInput()) {
+      this._buttonElement.setAttribute('disabled', true);
+    }
+    else {
+      this._buttonElement.removeAttribute('disabled');
+    }
+  }
+};

@@ -2,7 +2,7 @@ export const popupProfileEdit = document.querySelector('.profile__edit');
 export const popupAddCardEdit = document.querySelector('.profile__add');
 export const popupProfile = document.querySelector('.popup_type_profile');
 export const profileFormElement = popupProfile.querySelector('.popup__form_type_profile');
-export const nameInput = profileFormElement.querySelector('.popup__text-field_type_name'); 
+export const nameInput = profileFormElement.querySelector('.popup__text-field_type_name');
 export const jobInput = profileFormElement.querySelector('.popup__text-field_type_status');
 export const profileName = document.querySelector('.profile__name');
 export const profileDescription = document.querySelector('.profile__description');
@@ -20,7 +20,7 @@ export const formElementAddCard = popupAddCard.querySelector('.popup__form_type_
 
 export const popupViewCard = document.querySelector('.popup__type_view-card');
 export const popupPicture = popupViewCard.querySelector('.popup__picture');
-export const popupDescription =  popupViewCard.querySelector('.popup__description');
+export const popupDescription = popupViewCard.querySelector('.popup__description');
 
 export const popupDeleteCard = document.querySelector('.popup__type_delete-card');
 export const buttonDeleteCard = document.querySelector('.popup__button-delete-card');
