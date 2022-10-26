@@ -24,7 +24,7 @@ export function isLoading(poupForm, submitButtonSelector, loading) {
 
 function closeEscape(event) {
   if (event.key === 'Escape') {
-    closePopup(document.querySelector(`.${popupOpened}`));
+    closePopup(document.querySelector(`.${popup_opened}`));
   }
 };
 

@@ -2,6 +2,7 @@ import './index.css';
 // import { renderCard, editingCard } from '../components/card.js';
 import { openPopup, closePopup, isLoading } from '../components/modal.js';
 import { FormValidator } from '../components/validate.js';
+import { Popup } from '../components/popup.js';
 import { changeProfileInfo, changeAvatar, buttonDisable } from '../utils/utils.js';
 import { api } from '../components/api.js';
 import { profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, popupEditAvatar, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace, cardBlank } from '../utils/constants.js';
