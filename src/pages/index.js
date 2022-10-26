@@ -7,6 +7,7 @@ import { api } from '../components/api.js';
 import { profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, popupEditAvatar, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace, cardBlank } from '../utils/constants.js';
 
 import { Card } from '../components/newCard.js'; //как только newCard будет готов переименовать в card.js
+import { Section } from '../components/section.js';
 
 // настройки валидации
 const validationConfig = {
@@ -53,6 +54,7 @@ export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
 function addCard(config, cardId) {
   const namePicture = formElementAddCard.querySelector('.popup__text-field_type_picture-name').value;
   const linkPicture = formElementAddCard.querySelector('.popup__text-field_type_picture-link').value;
+
   const item = {
     name: namePicture,
     link: linkPicture,
@@ -60,8 +62,12 @@ function addCard(config, cardId) {
     owner: {_id: true},
     _id: cardId
   };
-  const newCard = new Card({ item }, cardBlank, true);
-  cardPlace.prepend(newCard.returnCard())
+
+  const renderCard = new Section({},cardPlace);
+  const newCard = new Card({ item }, cardBlank, true)
+
+  renderCard.addItem(newCard.returnCard())
+
   formElementAddCard.reset();
   buttonDisable(formElementAddCard, config.submitButtonSelector);
 };
@@ -118,9 +124,17 @@ Promise.all([api.requestNameBio(), api.requestCards()])
   .then(([userData, cardsData]) => {
     changeProfileInfo(profileName, userData.name, profileDescription, userData.about, avatar, userData.avatar);
     userId = userData._id;
-    cardsData.forEach(item => {
-      const card = new Card({ item }, cardBlank, userId);
-      cardPlace.append(card.returnCard());
-    })
+
+    const renderCards = new Section({
+        items: cardsData,
+        renderer: (item) => {
+          const card = new Card({ item }, cardBlank, userId);
+          renderCards._container.append(card.returnCard());
+        }
+      },
+      cardPlace
+    );
+
+    renderCards.renderItems()
   })
   .catch(err => console.log(err));
