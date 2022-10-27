@@ -1,11 +1,11 @@
 import './index.css';
 // import { renderCard, editingCard } from '../components/card.js';
-import { openPopup, closePopup, isLoading } from '../components/modal.js';
+import { isLoading } from '../components/modal.js';
 import { FormValidator } from '../components/validate.js';
-import { Popup } from '../components/popup.js';
+import { profilePopup, avatarPopup, addCardPopup, deleteCardPopup, viewCardPopup } from '../components/popup.js';
 import { changeProfileInfo, changeAvatar, buttonDisable } from '../utils/utils.js';
 import { api } from '../components/api.js';
-import { profileFormElement, popupProfile, popupAddCard, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, popupEditAvatar, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace, cardBlank } from '../utils/constants.js';
+import { profileFormElement, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace, cardBlank } from '../utils/constants.js';
 
 import { Card } from '../components/newCard.js'; //как только newCard будет готов переименовать в card.js
 import { Section } from '../components/section.js';
@@ -47,7 +47,7 @@ export function resetProfileForm(config, formElement) {
 export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
   api.deleteCard(cardId)
     .then(() => trash.closest('.element').remove())
-    .then(() => closePopup(popupDeleteCard))
+    .then(() => deleteCardPopup.close())
     .then(() => buttonDeleteCard.removeEventListener('click', clickButtonDelete))
     .catch(err => console.log(err))
 }
@@ -74,19 +74,19 @@ function addCard(config, cardId) {
 };
 
 // Слушатели
-popupAddCardEdit.addEventListener('click', () => {openPopup(popupAddCard)});
-avatarEdit.addEventListener('click', () => {openPopup(popupEditAvatar)});
+avatarEdit.addEventListener('click', () => { avatarPopup.open() });
 popupProfileEdit.addEventListener('click', () => {
   resetProfileForm(validationConfig, profileFormElement);
-  openPopup(popupProfile);
+  profilePopup.open();
 });
+popupAddCardEdit.addEventListener('click', () => { addCardPopup.open() });
 
 formEditAvatar.addEventListener('submit', (evt) => {
   evt.preventDefault();
   isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
   api.newAvatar(formElementEditAvatar.value)
     .then(() => changeAvatar(avatar, formElementEditAvatar.value))
-    .then(() =>   closePopup(popupEditAvatar))
+    .then(() => avatarPopup.close())
     .catch(err => console.log(err))
     .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
 })
@@ -96,7 +96,7 @@ profileFormElement.addEventListener('submit', (evt) => {
   isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
   api.editProfile(nameInput.value, jobInput.value)
     .then(() => profileFormSubmit(nameInput.value, jobInput.value))
-    .then(() => closePopup(popupProfile))
+    .then(() => profilePopup.close())
     .catch(err => console.log(err))
     .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
 });
@@ -106,7 +106,7 @@ formElementAddCard.addEventListener('submit', (evt) => {
   isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
   api.postNewCard(document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value)
     .then((result) => addCard(validationConfig, result._id))
-    .then(() => closePopup(popupAddCard))
+    .then(() => addCardPopup.close())
     .catch(err => console.log(err))
     .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
 });
