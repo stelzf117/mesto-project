@@ -1,9 +1,1 @@
-export function isLoading(poupForm, submitButtonSelector, loading) {
-  const button = poupForm.querySelector(submitButtonSelector);
-  if (loading) {
-    button.textContent = 'Сохранение...'
-  }
-  else {
-    button.textContent = 'Сохранить'
-  }
-}
+// Все функции отсюда перенесены в классы Popup и PopupWithForm и преобразованы в их методы.

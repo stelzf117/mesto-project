@@ -1,4 +1,4 @@
-import { deleteCardPopup, viewCardPopup } from '../components/popup.js';
+import { deleteCardPopup, viewCardPopup } from '../components/index.js';
 import { api } from './api.js';
 import { cardPlace, cardBlank, buttonDeleteCard } from '../utils/constants.js';
 import { viewCard, clickButtonDelete } from '../pages/index.js';

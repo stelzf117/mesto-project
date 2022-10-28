@@ -6,13 +6,13 @@ export class PopupWithForm extends Popup {
     this._formElement = this._popup.querySelector('.popup__form');
     this._formElementSubmitButton = this._formElement.querySelector('.popup__button-save');
     this._inputList = this._formElement.querySelectorAll('.popup__text-field');
-    this._inputValues = [];
+    this._inputValues = {}; // здесь будет содержимое инпутов
     this._callbackSubmit = callbackSubmit;
   }
 
   _getInputValues() {
     this._inputList.forEach(input => {
-      this._inputValues.push(input.value);
+      this._inputValues[input.name] = input.value; // ключём будет "name" из инпута html-разметки
     });
     return this._inputValues;
   }
@@ -30,11 +30,14 @@ export class PopupWithForm extends Popup {
     super.close();
   }
 
-  setEventListener() {
+  // переписываем метод setEventListeners(), который унаследовали от класса Popup
+  // добавляем слушатель на кнопку submit, которая запускает колбэк
+  setEventListeners() {
     this._formElement.addEventListener('submit', (evt) => this._callbackSubmit(evt));
-    super.setEventListener();
+    super.setEventListeners();
   }
 
+  // изменение состояния кнопки при взаимодействии с сервером
   isLoading(loading) {
     if (loading) {
       this._formElementSubmitButton.textContent = 'Сохранение...'
