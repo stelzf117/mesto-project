@@ -8,20 +8,20 @@ export class Popup {
   }
 
   // закрытие при нажатии на клавишу 'Escape'
-  _handleEscClose(event) {
-    if (event.key === 'Escape') {
+  _handleEscClose(evt) {
+    if (evt.key === 'Escape') {
       console.log('Нажат Escape');
       this.close();
     }
   }
 
   // закрытие при клике по кнопке и оверлею
-  _closeClick(event) {
-    if (event.target.classList.contains('popup_opened') || event.target.classList.contains('popup__close')) {
+  _closeClick(evt) {
+    if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__close')) {
       console.log('Нажат Click');
       this.close();
     };
-    event.stopPropagation();
+    evt.stopPropagation();
   }
 
   // установка слушателей
@@ -50,8 +50,8 @@ export class Popup {
 }
 
 // создаём экземпляры классов для popup-окон
-export const profilePopup = new Popup(popupSelectors.profile);
-export const avatarPopup = new Popup(popupSelectors.editAvatar);
-export const addCardPopup = new Popup(popupSelectors.addCard);
+// export const profilePopup = new Popup(popupSelectors.profile);
+// export const avatarPopup = new Popup(popupSelectors.editAvatar);
+// export const addCardPopup = new Popup(popupSelectors.addCard);
 export const deleteCardPopup = new Popup(popupSelectors.deleteCard);
 export const viewCardPopup = new Popup(popupSelectors.viewCard);

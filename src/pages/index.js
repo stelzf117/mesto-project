@@ -1,11 +1,13 @@
 import './index.css';
 // import { renderCard, editingCard } from '../components/card.js';
-import { isLoading } from '../components/modal.js';
 import { FormValidator } from '../components/validate.js';
-import { profilePopup, avatarPopup, addCardPopup, deleteCardPopup, viewCardPopup } from '../components/popup.js';
+
+import { deleteCardPopup } from '../components/popup.js';
+import { PopupWithForm } from '../components/popupWithForm.js';
+
 import { changeProfileInfo, changeAvatar, buttonDisable } from '../utils/utils.js';
 import { api } from '../components/api.js';
-import { profileFormElement, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, popupDeleteCard, cardPlace, cardBlank } from '../utils/constants.js';
+import { profileFormElement, popupAddCardEdit, popupProfileEdit, formElementAddCard, profileName, avatarEdit, avatar, formElementEditAvatar, formEditAvatar, profileDescription, nameInput, jobInput, popupPicture, popupDescription, cardPlace, cardBlank, popupSelectors } from '../utils/constants.js';
 
 import { Card } from '../components/newCard.js'; //как только newCard будет готов переименовать в card.js
 import { Section } from '../components/section.js';
@@ -22,6 +24,10 @@ const validationConfig = {
 const profileFormValidator = new FormValidator(validationConfig, profileFormElement);
 const avatarFormValidator = new FormValidator(validationConfig, formEditAvatar);
 const addCardformValidator = new FormValidator(validationConfig, formElementAddCard);
+
+const profilePopup = new PopupWithForm(popupSelectors.profile, (evt) => { });
+const avatarPopup = new PopupWithForm(popupSelectors.editAvatar, (evt) => { });
+const addCardPopup = new PopupWithForm(popupSelectors.addCard, (evt) => { });
 
 // Функции
 export function viewCard(imageName, imageLink) {
@@ -83,32 +89,32 @@ popupAddCardEdit.addEventListener('click', () => { addCardPopup.open() });
 
 formEditAvatar.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
+  avatarPopup.isLoading(true);
   api.newAvatar(formElementEditAvatar.value)
     .then(() => changeAvatar(avatar, formElementEditAvatar.value))
     .then(() => avatarPopup.close())
     .catch(err => console.log(err))
-    .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
+    .finally(() => avatarPopup.isLoading(false));
 })
 
 profileFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
+  profilePopup.isLoading(true);
   api.editProfile(nameInput.value, jobInput.value)
     .then(() => profileFormSubmit(nameInput.value, jobInput.value))
     .then(() => profilePopup.close())
     .catch(err => console.log(err))
-    .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
+    .finally(() => profilePopup.isLoading(false));
 });
 
 formElementAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  isLoading(formEditAvatar, validationConfig.submitButtonSelector, true);
+  addCardPopup.isLoading(true);
   api.postNewCard(document.querySelector('.popup__text-field_type_picture-name').value, document.querySelector('.popup__text-field_type_picture-link').value)
     .then((result) => addCard(validationConfig, result._id))
     .then(() => addCardPopup.close())
     .catch(err => console.log(err))
-    .finally(() => isLoading(formEditAvatar, validationConfig.submitButtonSelector, false));
+    .finally(() => addCardPopup.isLoading(false));
 });
 
 
