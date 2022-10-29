@@ -1,6 +1,6 @@
-import { openPopup } from "./modal.js";
+import { deleteCardPopup, viewCardPopup } from '../components/index.js';
 import { api } from './api.js';
-import { cardPlace, cardBlank, popupViewCard, popupDeleteCard, buttonDeleteCard } from '../utils/constants.js';
+import { cardPlace, cardBlank, buttonDeleteCard } from '../utils/constants.js';
 import { viewCard, clickButtonDelete } from '../pages/index.js';
 
 
@@ -15,7 +15,7 @@ export function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId
   photoElement.src = linkImage;
   photoElement.setAttribute('alt', nameImage);
   photoName.textContent = nameImage;
-  photoElement.addEventListener('click', () => { viewCard(nameImage, linkImage); openPopup(popupViewCard) });
+  photoElement.addEventListener('click', () => { viewCard(nameImage, linkImage); viewCardPopup.open() });
 
   heart.addEventListener('click', () => {
     if (heart.classList.contains('element__heart_active')) {
@@ -51,7 +51,7 @@ export function editingCard(nameImage, linkImage, likes, ownerId, userId, cardId
   }
 
   trash.addEventListener('click', () => {
-    openPopup(popupDeleteCard);
+    deleteCardPopup.open();
     buttonDeleteCard.addEventListener('click', () => {
       clickButtonDelete(cardId, trash, buttonDeleteCard)
     });
