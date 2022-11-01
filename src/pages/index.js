@@ -4,6 +4,7 @@ import { FormValidator } from '../components/validate.js';
 
 import { Popup } from '../components/popup.js';
 import { PopupWithForm } from '../components/popupWithForm.js';
+import { PopupWithImage } from '../components/popupWithImage.js';
 
 import {
   changeProfileInfo,
@@ -48,8 +49,7 @@ const avatarFormValidator = new FormValidator(validationConfig, formEditAvatar);
 const addCardformValidator = new FormValidator(validationConfig, formElementAddCard);
 
 export const deleteCardPopup = new Popup(popupSelectors.deleteCard);
-export const viewCardPopup = new Popup(popupSelectors.viewCard);
-
+export const popupWithImage = new PopupWithImage(popupSelectors.viewCard);
 
 // Создаём экземпляр класса для формы редактирования профиля, 
 // через колбэк - взаимодейсвие с сервером
@@ -125,10 +125,10 @@ export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
     .catch(err => console.log(err))
 }
 
-function addCard(config, cardId, name, link) {
+function addCard(config, cardId, description, link) {
 
   const item = {
-    name: name,
+    description: description,
     link: link,
     likes: false,
     owner: { _id: true },
@@ -138,7 +138,7 @@ function addCard(config, cardId, name, link) {
   const renderCard = new Section({}, cardPlace);
   const newCard = new Card({ item }, cardBlank, true)
 
-  renderCard.addItem(newCard.returnCard())
+  renderCard.addItem(newCard.returnCard(description, link))
 
   formElementAddCard.reset();
   buttonDisable(formElementAddCard, config.submitButtonSelector);
@@ -152,7 +152,6 @@ popupProfileEdit.addEventListener('click', () => {
 });
 popupAddCardEdit.addEventListener('click', () => { addCardPopup.open() });
 
-let userId; // сюда записывается наш ID
 
 // Исполняемый код
 
@@ -164,13 +163,12 @@ addCardformValidator.enableValidation();
 Promise.all([api.requestNameBio(), api.requestCards()])
   .then(([userData, cardsData]) => {
     changeProfileInfo(profileName, userData.name, profileDescription, userData.about, avatar, userData.avatar);
-    userId = userData._id;
 
     const renderCards = new Section({
       items: cardsData,
       renderer: (item) => {
-        const card = new Card({ item }, cardBlank, userId);
-        renderCards._container.append(card.returnCard());
+        const card = new Card({ item }, cardBlank, userData._id);
+        renderCards._container.append(card.returnCard(item.name, item.link));
       }
     },
       cardPlace

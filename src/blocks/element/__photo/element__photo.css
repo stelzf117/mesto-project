@@ -1,4 +1,5 @@
 .element__photo {
+  user-select: none;
   display: block;
   aspect-ratio: 1 / 1;
   height: 282px;

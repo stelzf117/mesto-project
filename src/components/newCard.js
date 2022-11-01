@@ -1,4 +1,5 @@
 import { api } from "./api.js";
+import { deleteCardPopup, popupWithImage } from '../pages/index.js';
 
 export class Card {
   constructor({ item }, cardBlank, userId) {
@@ -42,22 +43,23 @@ export class Card {
   }
 
 //добавление слушателей
-  _addEventListeners() {
-    this._photoElement.addEventListener('click', () => {
-      console.log('открытие попапа просмотра картинки');
+  _addEventListeners(description, link) {
+    this._photoElement.addEventListener('click', (evt) => {
+      popupWithImage.open(description, link);
+      evt.stopPropagation();
     })
 
     this._heart.addEventListener('click', () => {
       if(this._heart.classList.contains('element__heart_active')) {
         api.likeDeleteCard(this._cardId)
-          .then(res => {
+          .then((res) => {
             this._heartsCount.textContent = res.likes.length;
             this._heart.classList.remove('element__heart_active');
           })
       }
       else {
         api.likeCard(this._cardId)
-          .then(res => {
+          .then((res) => {
             this._heartsCount.textContent = res.likes.length;
             this._heart.classList.add('element__heart_active');
           })
@@ -72,9 +74,9 @@ export class Card {
   }
 
 //возвращение готовой разметки
-  returnCard() { 
+  returnCard(description, link) { 
     this._editCard();
-    this._addEventListeners();
+    this._addEventListeners(description, link);
     return this._cardBlank;
   }
 }
