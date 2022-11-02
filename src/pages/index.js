@@ -88,7 +88,7 @@ const addCardPopup = new PopupWithForm(popupSelectors.addCard, (evt) => {
   addCardPopup.isLoading(true);
   const inputValues = addCardPopup.getFormValues(); // получаем содержимое инпутов
   api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput) // отправляем содержимое инпутов
-    .then((data) => addCard(validationConfig, data._id, data.name, data.link))
+    .then((data) => addCard(validationConfig, data))
     .then(() => addCardPopup.close())
     .catch((err) => console.log(err))
     .finally(() => addCardPopup.isLoading(false));
@@ -125,20 +125,20 @@ export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
     .catch(err => console.log(err))
 }
 
-function addCard(config, cardId, description, link) {
+function addCard(config, data) {
 
   const item = {
-    description: description,
-    link: link,
+    description: data.name,
+    link: data.link,
     likes: false,
     owner: { _id: true },
-    _id: cardId
+    _id: data._id
   };
 
   const renderCard = new Section({}, cardPlace);
   const newCard = new Card({ item }, cardBlank, true)
 
-  renderCard.addItem(newCard.returnCard(description, link))
+  renderCard.addItem(newCard.returnCard(data.name, data.link))
 
   formElementAddCard.reset();
   buttonDisable(formElementAddCard, config.submitButtonSelector);
