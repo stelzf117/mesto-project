@@ -20,10 +20,10 @@ export class Card {
   }
 
 //редактирование скопированного узла
-  _editCard() { 
-    this._photoElement.src = this._linkImage;
-    this._photoElement.setAttribute('alt', this._nameImage);
-    this._photoName.textContent = this._nameImage;
+  _editCard(description, link) { 
+    this._photoElement.src = link;
+    this._photoElement.setAttribute('alt', description);
+    this._photoName.textContent = description;
 
 // выведение количества лайков, поиск своего лайка
     if (this._likes.length) {
@@ -75,7 +75,7 @@ export class Card {
 
 //возвращение готовой разметки
   returnCard(description, link) { 
-    this._editCard();
+    this._editCard(description, link);
     this._addEventListeners(description, link);
     return this._cardBlank;
   }
