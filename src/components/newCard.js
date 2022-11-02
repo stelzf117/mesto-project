@@ -77,7 +77,6 @@ export class Card {
   returnCard(description, link) { 
     this._editCard(description, link);
     this._addEventListeners(description, link);
-    console.log(description);
     return this._cardBlank;
   }
 }
