@@ -3,44 +3,44 @@ import { Popup } from './popup.js';
 export class PopupDeleteCard extends Popup {
   constructor(popupSelector, callbackSubmit) {
     super(popupSelector);
-    /* this._formElement = this._popup.querySelector('.popup__form');
-    this._formElementSubmitButton = this._formElement.querySelector('.popup__button-save');
-    this._inputList = this._formElement.querySelectorAll('.popup__text-field');
-    this._inputValues = {}; // здесь будет содержимое инпутов
-    this._callbackSubmit = callbackSubmit; */
+    this._button = this._popup.querySelector('.popup__button-save');
+    this._callbackSubmit = callbackSubmit;
+    this._cardId = '';
+    this._cardElement = '';
   }
 
   getIdCard() {
-    return userId;
+    return this._cardId;
   }
 
-  open() { // если не перезаписать так, то отрисовываются сразу 2-3 одинаковые карточки
+  open(cardId, cardElement) {
     this._popup.classList.add('popup_opened');
-    //super.setEventListeners();
-  }
-
-  close() {
-    this._formElement.reset();
-    //super.close();
+    super.setEventListeners();
+    return this._cardId = cardId, this._cardElement = cardElement;
   }
 
   // переписываем метод setEventListeners(), который унаследовали от класса Popup
-  // добавляем слушатель на кнопку submit, которая запускает колбэк
-  /* setEventListeners() {
-    this._formElement.addEventListener('submit', (evt) => this._callbackSubmit(evt));
+  // добавляем слушатель на кнопку, которая запускает колбэк
+  setEventListeners() {
+    this._button.addEventListener('click', (evt) => this._callbackSubmit(evt));
     super.setEventListeners();
-  } */
+  }
 
   // изменение состояния кнопки при взаимодействии с сервером
   isLoading(loading) {
     if (loading) {
-      this._formElementSubmitButton.textContent = 'Сохранение...';
-      this._formElementSubmitButton.setAttribute('disabled', true);
+      this._button.textContent = 'Удаление...';
+      this._button.setAttribute('disabled', true);
     }
     else {
       setTimeout(() => { // отсрочка нужна, чтобы окно успело закрыться (из-за анимации)        
-        this._formElementSubmitButton.textContent = 'Сохранить';
+        this._button.textContent = 'Да';
+        this._button.removeAttribute('disabled', true);
       }, 400);
     }
   }
-}
+
+  delete() {
+    this._cardElement.remove();
+  }
+};

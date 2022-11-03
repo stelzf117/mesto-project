@@ -17,8 +17,6 @@ import {
   profileDescription,
   nameInput,
   jobInput,
-  popupPicture,
-  popupDescription,
   cardPlace,
   cardBlank,
   popupSelectors
@@ -40,7 +38,6 @@ import { FormValidator } from '../components/validate.js';
 import { Card } from '../components/newCard.js'; //как только newCard будет готов переименовать в card.js
 import { Section } from '../components/section.js';
 
-import { Popup } from '../components/popup.js';
 import { PopupWithForm } from '../components/popupWithForm.js';
 import { PopupWithImage } from '../components/popupWithImage.js';
 import { PopupDeleteCard } from '../components/popupDeleteCard.js';
@@ -52,24 +49,18 @@ const avatarFormValidator = new FormValidator(validationConfig, formEditAvatar);
 const addCardformValidator = new FormValidator(validationConfig, formElementAddCard);
 
 export const popupWithImage = new PopupWithImage(popupSelectors.viewCard);
-//export const deleteCardPopup = new Popup(popupSelectors.deleteCard);
-
-
 
 // Создаём экземпляр класса для формы редактирования профиля, 
 // через колбэк - взаимодейсвие с сервером
 export const popupDeleteCard = new PopupDeleteCard(popupSelectors.deleteCard, (evt) => {
   evt.preventDefault();
   popupDeleteCard.isLoading(true);
-  //const cardId = popupDeleteCard.getIdCard();
-  /* api.deleteCard(cardId) // отправляем запрос на сервер
-    .then((data) => console.log(data)) //используем данные от сервера
+  api.deleteCard(popupDeleteCard.getIdCard())
+    .then(() => popupDeleteCard.delete())
     .then(() => popupDeleteCard.close())
-    .catch((err) => console.log(err))
-    .finally(() => popupDeleteCard.isLoading(false)); */
+    .finally(() => popupDeleteCard.isLoading(false));
 });
-
-
+popupDeleteCard.setEventListeners(); // вешаем слушатели через метод класса
 
 // Создаём экземпляр класса для формы редактирования профиля, 
 // через колбэк - взаимодейсвие с сервером
@@ -80,7 +71,6 @@ const profilePopup = new PopupWithForm(popupSelectors.profile, (evt) => {
   api.editProfile(inputValues.nameInput, inputValues.statusInput) // отправляем содержимое инпутов
     .then((data) => profileFormSubmit(data.name, data.about)) //используем данные от сервера
     .then(() => profilePopup.close())
-    .catch((err) => console.log(err))
     .finally(() => profilePopup.isLoading(false));
 });
 profilePopup.setEventListeners(); // вешаем слушатели через метод класса
@@ -95,7 +85,6 @@ const avatarPopup = new PopupWithForm(popupSelectors.editAvatar, (evt) => {
   api.newAvatar(inputValue.avatarInput) // отправляем содержимое инпута
     .then((data) => changeAvatar(avatar, data.avatar)) //используем данные от сервера
     .then(() => avatarPopup.close())
-    .catch((err) => console.log(err))
     .finally(() => avatarPopup.isLoading(false));
 });
 avatarPopup.setEventListeners(); // вешаем слушатели через метод класса
@@ -110,7 +99,6 @@ const addCardPopup = new PopupWithForm(popupSelectors.addCard, (evt) => {
   api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput) // отправляем содержимое инпутов
     .then((data) => addNewCard(data))
     .then(() => addCardPopup.close())
-    .catch((err) => console.log(err))
     .finally(() => addCardPopup.isLoading(false));
 });
 addCardPopup.setEventListeners(); // вешаем слушатели через метод класса
@@ -127,14 +115,6 @@ export function resetProfileForm(formElement) {
   jobInput.value = profileDescription.textContent;
   inputList.forEach((inputElement) => { profileFormValidator.checkInputValidity(inputElement) });
 };
-
-export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
-  api.deleteCard(cardId)
-    .then(() => trash.closest('.element').remove())
-    .then(() => deleteCardPopup.close())
-    .then(() => buttonDeleteCard.removeEventListener('click', clickButtonDelete))
-    .catch(err => console.log(err))
-}
 
 function addNewCard(cardData) {
   const item = {
