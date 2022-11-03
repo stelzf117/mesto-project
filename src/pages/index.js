@@ -1,13 +1,5 @@
 import './index.css';
 
-import { Api, apiConfig } from '../components/api.js';
-
-import { FormValidator } from '../components/validate.js';
-
-import { Popup } from '../components/popup.js';
-import { PopupWithForm } from '../components/popupWithForm.js';
-import { PopupWithImage } from '../components/popupWithImage.js';
-
 import {
   changeProfileInfo,
   changeAvatar
@@ -32,10 +24,6 @@ import {
   popupSelectors
 } from '../utils/constants.js';
 
-// import { renderCard, editingCard } from '../components/card.js';
-import { Card } from '../components/newCard.js'; //как только newCard будет готов переименовать в card.js
-import { Section } from '../components/section.js';
-
 // настройки валидации
 const validationConfig = {
   formSelector: '.popup__form',
@@ -44,15 +32,44 @@ const validationConfig = {
   inputErrorClass: 'popup__text-field__error',
 }
 
+import { Api, apiConfig } from '../components/api.js';
+
+import { FormValidator } from '../components/validate.js';
+
+// import { renderCard, editingCard } from '../components/card.js';
+import { Card } from '../components/newCard.js'; //как только newCard будет готов переименовать в card.js
+import { Section } from '../components/section.js';
+
+import { Popup } from '../components/popup.js';
+import { PopupWithForm } from '../components/popupWithForm.js';
+import { PopupWithImage } from '../components/popupWithImage.js';
+import { PopupDeleteCard } from '../components/popupDeleteCard.js';
+
 export const api = new Api(apiConfig);
 
-// Для каждой проверяемой формы создаваём экземпляр класса
 const profileFormValidator = new FormValidator(validationConfig, profileFormElement);
 const avatarFormValidator = new FormValidator(validationConfig, formEditAvatar);
 const addCardformValidator = new FormValidator(validationConfig, formElementAddCard);
 
 export const popupWithImage = new PopupWithImage(popupSelectors.viewCard);
-export const deleteCardPopup = new Popup(popupSelectors.deleteCard);
+//export const deleteCardPopup = new Popup(popupSelectors.deleteCard);
+
+
+
+// Создаём экземпляр класса для формы редактирования профиля, 
+// через колбэк - взаимодейсвие с сервером
+export const popupDeleteCard = new PopupDeleteCard(popupSelectors.deleteCard, (evt) => {
+  evt.preventDefault();
+  popupDeleteCard.isLoading(true);
+  //const cardId = popupDeleteCard.getIdCard();
+  /* api.deleteCard(cardId) // отправляем запрос на сервер
+    .then((data) => console.log(data)) //используем данные от сервера
+    .then(() => popupDeleteCard.close())
+    .catch((err) => console.log(err))
+    .finally(() => popupDeleteCard.isLoading(false)); */
+});
+
+
 
 // Создаём экземпляр класса для формы редактирования профиля, 
 // через колбэк - взаимодейсвие с сервером
@@ -98,20 +115,12 @@ const addCardPopup = new PopupWithForm(popupSelectors.addCard, (evt) => {
 });
 addCardPopup.setEventListeners(); // вешаем слушатели через метод класса
 
-
-// Функции
-/* export function viewCard(imageName, imageLink) {
-  popupPicture.src = imageLink;
-  popupPicture.alt = imageName;
-  popupDescription.textContent = imageName;
-}; */
-
 export function profileFormSubmit(newName, newDescription) {
   profileName.textContent = newName;
   profileDescription.textContent = newDescription;
 };
 
-export function resetProfileForm(btnSelector, formElement) {
+export function resetProfileForm(formElement) {
   const inputList = profilePopup.getInputList();
   formElement.reset();
   nameInput.value = profileName.textContent;
@@ -142,16 +151,15 @@ function addNewCard(cardData) {
   formElementAddCard.reset();
 };
 
+//// Исполняемый код ////
+
 // Слушатели
 avatarEdit.addEventListener('click', () => { avatarPopup.open() });
 popupProfileEdit.addEventListener('click', () => {
-  resetProfileForm(validationConfig.submitButtonSelector, profileFormElement);
+  resetProfileForm(profileFormElement);
   profilePopup.open();
 });
 popupAddCardEdit.addEventListener('click', () => { addCardPopup.open() });
-
-
-// Исполняемый код
 
 // Запускаем валидацию форм
 profileFormValidator.enableValidation();

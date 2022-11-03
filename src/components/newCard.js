@@ -1,4 +1,4 @@
-import { deleteCardPopup, popupWithImage, api } from '../pages/index.js';
+import { popupDeleteCard, popupWithImage, api } from '../pages/index.js';
 
 export class Card {
   constructor(item, cardBlank, userId) {
@@ -66,6 +66,7 @@ export class Card {
     })
 
     this._trash.addEventListener('click', () => {
+      //popupDeleteCard.open();
       console.log('открытие попапа удаления карточки');
       console.log('добавление слушателя на кнопку попапа удаления карточки');
     })
