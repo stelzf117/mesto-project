@@ -7,6 +7,14 @@ export const popupSelectors = {
   deleteCard: '.popup__type_delete-card'
 }
 
+// настройки валидации
+export const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__text-field',
+  submitButtonSelector: '.popup__button-save',
+  inputErrorClass: 'popup__text-field__error',
+}
+
 export const popupProfileEdit = document.querySelector('.profile__edit');
 export const popupAddCardEdit = document.querySelector('.profile__add');
 export const popupProfile = document.querySelector(popupSelectors.profile);

@@ -19,16 +19,9 @@ import {
   jobInput,
   cardPlace,
   cardBlank,
-  popupSelectors
+  popupSelectors,
+  validationConfig
 } from '../utils/constants.js';
-
-// настройки валидации
-const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__text-field',
-  submitButtonSelector: '.popup__button-save',
-  inputErrorClass: 'popup__text-field__error',
-}
 
 import { Api, apiConfig } from '../components/api.js';
 
