@@ -25,6 +25,11 @@ export class PopupWithForm extends Popup {
     return this._inputList;
   }
 
+  open() { // если не перезаписать так, то отрисовываются сразу 2-3 одинаковые карточки
+    this._popup.classList.add('popup_opened');
+    super.setEventListeners();
+  }
+
   close() {
     this._formElement.reset();
     super.close();
@@ -40,10 +45,13 @@ export class PopupWithForm extends Popup {
   // изменение состояния кнопки при взаимодействии с сервером
   isLoading(loading) {
     if (loading) {
-      this._formElementSubmitButton.textContent = 'Сохранение...'
+      this._formElementSubmitButton.textContent = 'Сохранение...';
+      this._formElementSubmitButton.setAttribute('disabled', true);
     }
     else {
-      this._formElementSubmitButton.textContent = 'Сохранить'
+      setTimeout(() => { // отсрочка нужна, чтобы окно успело закрыться (из-за анимации)        
+        this._formElementSubmitButton.textContent = 'Сохранить';
+      }, 400);
     }
   }
 }

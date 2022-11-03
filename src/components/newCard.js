@@ -1,8 +1,7 @@
-import { api } from "./api.js";
-import { deleteCardPopup, popupWithImage } from '../pages/index.js';
+import { deleteCardPopup, popupWithImage, api } from '../pages/index.js';
 
 export class Card {
-  constructor({ item }, cardBlank, userId) {
+  constructor(item, cardBlank, userId) {
 // Селекторы
   this._cardBlank = cardBlank.cloneNode(true);
   this._photoElement = this._cardBlank.querySelector('.element__photo');
@@ -20,7 +19,7 @@ export class Card {
   }
 
 //редактирование скопированного узла
-  _editCard(description, link) { 
+  _enterData(description, link) { 
     this._photoElement.src = link;
     this._photoElement.setAttribute('alt', description);
     this._photoName.textContent = description;
@@ -75,7 +74,7 @@ export class Card {
 
 //возвращение готовой разметки
   returnCard(description, link) { 
-    this._editCard(description, link);
+    this._enterData(description, link);
     this._addEventListeners(description, link);
     return this._cardBlank;
   }

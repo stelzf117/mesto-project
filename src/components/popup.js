@@ -27,7 +27,7 @@ export class Popup {
   }
 
   // отключение слушателей
-  _deactivateEventListeners() {
+  deactivateEventListeners() {
     this._popup.removeEventListener('click', this._closeClick);
     document.removeEventListener('keydown', this._handleEscClose);
   }
@@ -38,7 +38,7 @@ export class Popup {
   }
 
   close() {
-    this._deactivateEventListeners();
+    this.deactivateEventListeners();
     this._popup.classList.remove('popup_opened');
   }
 }

@@ -1,5 +1,7 @@
 import './index.css';
-// import { renderCard, editingCard } from '../components/card.js';
+
+import { Api, apiConfig } from '../components/api.js';
+
 import { FormValidator } from '../components/validate.js';
 
 import { Popup } from '../components/popup.js';
@@ -8,11 +10,9 @@ import { PopupWithImage } from '../components/popupWithImage.js';
 
 import {
   changeProfileInfo,
-  changeAvatar,
-  buttonDisable
+  changeAvatar
 } from '../utils/utils.js';
 
-import { api } from '../components/api.js';
 import {
   profileFormElement,
   popupAddCardEdit,
@@ -32,6 +32,7 @@ import {
   popupSelectors
 } from '../utils/constants.js';
 
+// import { renderCard, editingCard } from '../components/card.js';
 import { Card } from '../components/newCard.js'; //как только newCard будет готов переименовать в card.js
 import { Section } from '../components/section.js';
 
@@ -43,13 +44,15 @@ const validationConfig = {
   inputErrorClass: 'popup__text-field__error',
 }
 
+export const api = new Api(apiConfig);
+
 // Для каждой проверяемой формы создаваём экземпляр класса
 const profileFormValidator = new FormValidator(validationConfig, profileFormElement);
 const avatarFormValidator = new FormValidator(validationConfig, formEditAvatar);
 const addCardformValidator = new FormValidator(validationConfig, formElementAddCard);
 
-export const deleteCardPopup = new Popup(popupSelectors.deleteCard);
 export const popupWithImage = new PopupWithImage(popupSelectors.viewCard);
+export const deleteCardPopup = new Popup(popupSelectors.deleteCard);
 
 // Создаём экземпляр класса для формы редактирования профиля, 
 // через колбэк - взаимодейсвие с сервером
@@ -88,7 +91,7 @@ const addCardPopup = new PopupWithForm(popupSelectors.addCard, (evt) => {
   addCardPopup.isLoading(true);
   const inputValues = addCardPopup.getFormValues(); // получаем содержимое инпутов
   api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput) // отправляем содержимое инпутов
-    .then((data) => addCard(validationConfig, data))
+    .then((data) => addNewCard(data))
     .then(() => addCardPopup.close())
     .catch((err) => console.log(err))
     .finally(() => addCardPopup.isLoading(false));
@@ -97,24 +100,23 @@ addCardPopup.setEventListeners(); // вешаем слушатели через 
 
 
 // Функции
-export function viewCard(imageName, imageLink) {
+/* export function viewCard(imageName, imageLink) {
   popupPicture.src = imageLink;
   popupPicture.alt = imageName;
   popupDescription.textContent = imageName;
-};
+}; */
 
 export function profileFormSubmit(newName, newDescription) {
   profileName.textContent = newName;
   profileDescription.textContent = newDescription;
 };
 
-export function resetProfileForm(config, formElement) {
+export function resetProfileForm(btnSelector, formElement) {
   const inputList = profilePopup.getInputList();
   formElement.reset();
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
   inputList.forEach((inputElement) => { profileFormValidator.checkInputValidity(inputElement) });
-  buttonDisable(formElement, config.submitButtonSelector);
 };
 
 export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
@@ -125,29 +127,25 @@ export function clickButtonDelete(cardId, trash, buttonDeleteCard) {
     .catch(err => console.log(err))
 }
 
-function addCard(config, data) {
-
+function addNewCard(cardData) {
   const item = {
-    description: data.name,
-    link: data.link,
+    description: cardData.name,
+    link: cardData.link,
     likes: false,
     owner: { _id: true },
-    _id: data._id
+    _id: cardData._id
   };
-
+  
   const renderCard = new Section({}, cardPlace);
-  const newCard = new Card({ item }, cardBlank, true)
-
-  renderCard.addItem(newCard.returnCard(data.name, data.link))
-
+  const newCard = new Card(item, cardBlank, true);
+  renderCard.addItem(newCard.returnCard(cardData.name, cardData.link));
   formElementAddCard.reset();
-  buttonDisable(formElementAddCard, config.submitButtonSelector);
 };
 
 // Слушатели
 avatarEdit.addEventListener('click', () => { avatarPopup.open() });
 popupProfileEdit.addEventListener('click', () => {
-  resetProfileForm(validationConfig, profileFormElement);
+  resetProfileForm(validationConfig.submitButtonSelector, profileFormElement);
   profilePopup.open();
 });
 popupAddCardEdit.addEventListener('click', () => { addCardPopup.open() });
@@ -167,13 +165,12 @@ Promise.all([api.requestNameBio(), api.requestCards()])
     const renderCards = new Section({
       items: cardsData,
       renderer: (item) => {
-        const card = new Card({ item }, cardBlank, userData._id);
-        renderCards._container.append(card.returnCard(item.name, item.link));
+        const card = new Card(item, cardBlank, userData._id);
+        renderCards.container.append(card.returnCard(item.name, item.link));
       }
     },
       cardPlace
     );
-
     renderCards.renderItems()
   })
   .catch(err => console.log(err));
