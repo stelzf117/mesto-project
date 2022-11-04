@@ -41,3 +41,10 @@ export const popupDescription = popupViewCard.querySelector('.popup__description
 
 export const popupDeleteCard = document.querySelector(popupSelectors.deleteCard);
 export const buttonDeleteCard = document.querySelector('.popup__button-delete-card');
+
+// Поля формы профиля
+export const profileSelectors = {
+  userName: profileName,
+  userDescription: profileDescription,
+  userAvatar: avatar
+}

@@ -1,12 +1,9 @@
 import './index.css';
 export const api = new Api(apiConfig);
 export const popupWithImage = new PopupWithImage(popupSelectors.viewCard);
-// ----------------------------------------------------------------------------------
-import {
-  changeProfileInfo,
-  changeAvatar
-} from '../utils/utils.js';
-// ----------------------------------------------------------------------------------
+//// Импорт utils ////
+import { changeAvatar } from '../utils/utils.js';
+
 import {
   profileFormElement,
   popupAddCardEdit,
@@ -22,9 +19,10 @@ import {
   cardPlace,
   cardBlank,
   popupSelectors,
-  validationConfig
+  validationConfig,
+  profileSelectors
 } from '../utils/constants.js';
-// ----------------------------------------------------------------------------------
+//// Импорт модулей
 import { Api, apiConfig } from '../components/api.js';
 import { FormValidator } from '../components/validate.js';
 import { Card } from '../components/сard.js';
@@ -32,11 +30,13 @@ import { Section } from '../components/section.js';
 import { PopupWithForm } from '../components/popupWithForm.js';
 import { PopupWithImage } from '../components/popupWithImage.js';
 import { PopupDeleteCard } from '../components/popupDeleteCard.js';
-// ----------------------------------------------------------------------------------
+import UserInfo from '../components/userInfo.js';
+//// Переменные ////
 const profileFormValidator = new FormValidator(validationConfig, profileFormElement);
 const avatarFormValidator = new FormValidator(validationConfig, formEditAvatar);
 const addCardformValidator = new FormValidator(validationConfig, formElementAddCard);
-// ----------------------------------------------------------------------------------
+const userinfo = new UserInfo(profileSelectors);
+//// Функции коллбэки ////
 const handleCardClick = (description, link) => popupWithImage.open(description, link);
 const handleHeartClick = (card) => {
   if (card._heart.classList.contains('element__heart_active')) {
@@ -60,11 +60,7 @@ const callBacks = {
   handleHeartClick: handleHeartClick,
   handleCardDelete: handleCardDelete
 }
-// ----------------------------------------------------------------------------------
 
-
-// Создаём экземпляр класса для формы редактирования профиля, 
-// через колбэк - взаимодейсвие с сервером
 export const popupDeleteCard = new PopupDeleteCard(popupSelectors.deleteCard, (evt) => {
   evt.preventDefault();
   popupDeleteCard.isLoading(true);
@@ -73,55 +69,51 @@ export const popupDeleteCard = new PopupDeleteCard(popupSelectors.deleteCard, (e
     .then(() => popupDeleteCard.close())
     .finally(() => popupDeleteCard.isLoading(false));
 });
-popupDeleteCard.setEventListeners(); // вешаем слушатели через метод класса
+popupDeleteCard.setEventListeners();
 
-// Создаём экземпляр класса для формы редактирования профиля, 
-// через колбэк - взаимодейсвие с сервером
+
+//// Функции ////
 const profilePopup = new PopupWithForm(popupSelectors.profile, (evt) => {
   evt.preventDefault();
   profilePopup.isLoading(true);
-  const inputValues = profilePopup.getFormValues(); // получаем содержимое инпутов
-  api.editProfile(inputValues.nameInput, inputValues.statusInput) // отправляем содержимое инпутов
-    .then((data) => profileFormSubmit(data.name, data.about)) //используем данные от сервера
+  const inputValues = profilePopup.getFormValues();
+  api.editProfile(inputValues.nameInput, inputValues.statusInput)
+    .then((data) => profileFormSubmit(data.name, data.about))
     .then(() => profilePopup.close())
     .finally(() => profilePopup.isLoading(false));
 });
-profilePopup.setEventListeners(); // вешаем слушатели через метод класса
+profilePopup.setEventListeners();
 
 
-// Создаём экземпляр класса для формы редактирования аватарки,
-// через колбэк - взаимодейсвие с сервером
 const avatarPopup = new PopupWithForm(popupSelectors.editAvatar, (evt) => {
   evt.preventDefault();
   avatarPopup.isLoading(true);
-  const inputValue = avatarPopup.getFormValues(); // получаем содержимое инпута
-  api.newAvatar(inputValue.avatarInput) // отправляем содержимое инпута
-    .then((data) => changeAvatar(avatar, data.avatar)) //используем данные от сервера
+  const inputValue = avatarPopup.getFormValues();
+  api.newAvatar(inputValue.avatarInput)
+    .then((data) => changeAvatar(avatar, data.avatar)) 
     .then(() => avatarPopup.close())
     .finally(() => avatarPopup.isLoading(false));
 });
-avatarPopup.setEventListeners(); // вешаем слушатели через метод класса
+avatarPopup.setEventListeners();
 
 
-// Создаём экземпляр класса для формы добавления карточки,
-// через колбэк - взаимодейсвие с сервером
 const addCardPopup = new PopupWithForm(popupSelectors.addCard, (evt) => {
   evt.preventDefault();
   addCardPopup.isLoading(true);
-  const inputValues = addCardPopup.getFormValues(); // получаем содержимое инпутов
-  api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput) // отправляем содержимое инпутов
+  const inputValues = addCardPopup.getFormValues();
+  api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput)
     .then((data) => addNewCard(data, callBacks))
     .then(() => addCardPopup.close())
     .finally(() => addCardPopup.isLoading(false));
 });
-addCardPopup.setEventListeners(); // вешаем слушатели через метод класса
+addCardPopup.setEventListeners();
 
-export function profileFormSubmit(newName, newDescription) {
+function profileFormSubmit(newName, newDescription) {
   profileName.textContent = newName;
   profileDescription.textContent = newDescription;
 };
 
-export function resetProfileForm(formElement) {
+function resetProfileForm(formElement) {
   const inputList = profilePopup.getInputList();
   formElement.reset();
   nameInput.value = profileName.textContent;
@@ -129,9 +121,7 @@ export function resetProfileForm(formElement) {
   inputList.forEach((inputElement) => { profileFormValidator.checkInputValidity(inputElement) });
 };
 
-// ----------------------------------------------------------------------------------
-// Функция должна возвращать объект и добавлять все слушатели, налаживать взаимодействие с api и получение данных от форм
-// Вторая функция должна добавлять карточку в разметку
+
 function addNewCard(cardData, callBacks) {
   const item = {
     description: cardData.name,
@@ -146,7 +136,7 @@ function addNewCard(cardData, callBacks) {
   formElementAddCard.reset();
 };
 
-// ----------------------------------------------------------------------------------
+
 //// Исполняемый код ////
 avatarEdit.addEventListener('click', () => { avatarPopup.open() });
 popupProfileEdit.addEventListener('click', () => {
@@ -161,8 +151,7 @@ addCardformValidator.enableValidation();
 
 Promise.all([api.requestNameBio(), api.requestCards()])
   .then(([userData, cardsData]) => {
-    changeProfileInfo(profileName, userData.name, profileDescription, userData.about, avatar, userData.avatar);
-
+    userinfo.setUserInfo(userinfo.getUserInfo(userData));
     const renderCards = new Section({
       items: cardsData,
       renderer: (item) => {

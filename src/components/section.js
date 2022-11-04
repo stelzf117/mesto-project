@@ -1,8 +1,8 @@
 export class Section {
   constructor({ items, renderer }, container) {
-    this._items = items; // массив для отрисовки
-    this._renderer = renderer; //функция для отрисовки
-    this.container = container; // контейнер для добавления отрисованных элементов
+    this._items = items; 
+    this._renderer = renderer; 
+    this.container = container;
   }
 
   renderItems() {
