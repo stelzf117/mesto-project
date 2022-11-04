@@ -1,7 +1,5 @@
-import { popupDeleteCard, popupWithImage, api } from '../pages/index.js';
-
 export class Card {
-  constructor(item, cardBlank, userId) {
+  constructor(item, cardBlank, userId, { handleCardClick, handleHeartClick, handleCardDelete }) {
     // Селекторы
     this._cardBlank = cardBlank.cloneNode(true);
     this.card = this._cardBlank.querySelector('.element');
@@ -17,6 +15,10 @@ export class Card {
     this._ownerId = item.owner._id;
     this._userId = userId;
     this._cardId = item._id;
+    // Функции
+    this._handleCardClick = handleCardClick;
+    this._handleHeartClick = handleHeartClick;
+    this._handleCardDelete = handleCardDelete;
   }
 
   //редактирование скопированного узла
@@ -44,32 +46,11 @@ export class Card {
 
   //добавление слушателей
   _addEventListeners(description, link) {
-    this._photoElement.addEventListener('click', (evt) => {
-      popupWithImage.open(description, link);
-      evt.stopPropagation();
-    })
+    this._photoElement.addEventListener('click', () => this._handleCardClick(description, link))
 
-    this._heart.addEventListener('click', () => {
-      if (this._heart.classList.contains('element__heart_active')) {
-        api.likeDeleteCard(this._cardId)
-          .then((res) => {
-            this._heartsCount.textContent = res.likes.length;
-            this._heart.classList.remove('element__heart_active');
-          })
-      }
-      else {
-        api.likeCard(this._cardId)
-          .then((res) => {
-            this._heartsCount.textContent = res.likes.length;
-            this._heart.classList.add('element__heart_active');
-          })
-      }
-    })
+    this._heart.addEventListener('click', () => this._handleHeartClick(this))
 
-    this._trash.addEventListener('click', () => {
-      popupDeleteCard.open(this._cardId, this.card);
-    })
-
+    this._trash.addEventListener('click', () => this._handleCardDelete(this))
   }
 
   //возвращение готовой разметки
