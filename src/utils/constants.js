@@ -7,6 +7,14 @@ export const popupSelectors = {
   deleteCard: '.popup__type_delete-card'
 }
 
+export const userSelectors = {
+  name: '.profile__name',
+  status: '.profile__description',
+  linkPicture: '.profile__avatar',
+  inputName: '.popup__text-field_type_name',
+  inputStatus: '.popup__text-field_type_status',
+}
+
 // настройки валидации
 export const validationConfig = {
   formSelector: '.popup__form',

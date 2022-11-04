@@ -1,26 +1,18 @@
 import './index.css';
 
 import {
-  changeProfileInfo,
-  changeAvatar
-} from '../utils/utils.js';
-
-import {
   profileFormElement,
   popupAddCardEdit,
   popupProfileEdit,
   formElementAddCard,
-  profileName,
   avatarEdit,
   avatar,
   formEditAvatar,
-  profileDescription,
-  nameInput,
-  jobInput,
   cardPlace,
   cardBlank,
   popupSelectors,
-  validationConfig
+  validationConfig,
+  userSelectors,
 } from '../utils/constants.js';
 
 import { Api, apiConfig } from '../components/api.js';
@@ -34,8 +26,11 @@ import { Section } from '../components/section.js';
 import { PopupWithForm } from '../components/popupWithForm.js';
 import { PopupWithImage } from '../components/popupWithImage.js';
 import { PopupDeleteCard } from '../components/popupDeleteCard.js';
+import { UserInfo } from '../components/userInfo.js';
 
 export const api = new Api(apiConfig);
+
+const userInfo = new UserInfo(userSelectors);
 
 const profileFormValidator = new FormValidator(validationConfig, profileFormElement);
 const avatarFormValidator = new FormValidator(validationConfig, formEditAvatar);
@@ -62,7 +57,7 @@ const profilePopup = new PopupWithForm(popupSelectors.profile, (evt) => {
   profilePopup.isLoading(true);
   const inputValues = profilePopup.getFormValues(); // получаем содержимое инпутов
   api.editProfile(inputValues.nameInput, inputValues.statusInput) // отправляем содержимое инпутов
-    .then((data) => profileFormSubmit(data.name, data.about)) //используем данные от сервера
+    .then((data) =>  userInfo.setProfile(userInfo.getUserInfo(data)) ) //используем данные от сервера
     .then(() => profilePopup.close())
     .finally(() => profilePopup.isLoading(false));
 });
@@ -76,7 +71,7 @@ const avatarPopup = new PopupWithForm(popupSelectors.editAvatar, (evt) => {
   avatarPopup.isLoading(true);
   const inputValue = avatarPopup.getFormValues(); // получаем содержимое инпута
   api.newAvatar(inputValue.avatarInput) // отправляем содержимое инпута
-    .then((data) => changeAvatar(avatar, data.avatar)) //используем данные от сервера
+    .then((data) => userInfo.setAvatar(userInfo.getUserInfo(data))) //используем данные от сервера
     .then(() => avatarPopup.close())
     .finally(() => avatarPopup.isLoading(false));
 });
@@ -96,19 +91,6 @@ const addCardPopup = new PopupWithForm(popupSelectors.addCard, (evt) => {
 });
 addCardPopup.setEventListeners(); // вешаем слушатели через метод класса
 
-export function profileFormSubmit(newName, newDescription) {
-  profileName.textContent = newName;
-  profileDescription.textContent = newDescription;
-};
-
-export function resetProfileForm(formElement) {
-  const inputList = profilePopup.getInputList();
-  formElement.reset();
-  nameInput.value = profileName.textContent;
-  jobInput.value = profileDescription.textContent;
-  inputList.forEach((inputElement) => { profileFormValidator.checkInputValidity(inputElement) });
-};
-
 function addNewCard(cardData) {
   const item = {
     description: cardData.name,
@@ -117,7 +99,7 @@ function addNewCard(cardData) {
     owner: { _id: true },
     _id: cardData._id
   };
-  
+
   const renderCard = new Section({}, cardPlace);
   const newCard = new Card(item, cardBlank, true);
   renderCard.addItem(newCard.returnCard(cardData.name, cardData.link));
@@ -128,10 +110,13 @@ function addNewCard(cardData) {
 
 // Слушатели
 avatarEdit.addEventListener('click', () => { avatarPopup.open() });
+
 popupProfileEdit.addEventListener('click', () => {
-  resetProfileForm(profileFormElement);
   profilePopup.open();
+  api.requestNameBio()
+    .then((data) => { userInfo.setInputs(userInfo.getUserInfo(data)) });
 });
+
 popupAddCardEdit.addEventListener('click', () => { addCardPopup.open() });
 
 // Запускаем валидацию форм
@@ -141,8 +126,7 @@ addCardformValidator.enableValidation();
 
 Promise.all([api.requestNameBio(), api.requestCards()])
   .then(([userData, cardsData]) => {
-    changeProfileInfo(profileName, userData.name, profileDescription, userData.about, avatar, userData.avatar);
-
+    userInfo.setUserInfo(userData);
     const renderCards = new Section({
       items: cardsData,
       renderer: (item) => {
