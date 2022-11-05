@@ -8,6 +8,11 @@ export default class PopupWithForm extends Popup {
     this._inputList = this._formElement.querySelectorAll('.popup__text-field');
     this._inputValues = {}; // здесь будет содержимое инпутов
     this._callbackSubmit = callbackSubmit;
+    this._doCallback = this._doCallback.bind(this);// этот нужно, чтобы можно было снять обработчик с кнопки
+  }
+
+  _doCallback(evt) { // этот метод нужен, чтобы можно было снять обработчик с кнопки
+    this._callbackSubmit(evt);
   }
 
   _getInputValues() {
@@ -31,14 +36,15 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    this._formElement.reset();
-    super.close();
+    //this._formElement.reset();
+    //super.close();
+    this._formElement.removeEventListener('submit', this._doCallback);
   }
 
   // переписываем метод setEventListeners(), который унаследовали от класса Popup
   // добавляем слушатель на кнопку submit, которая запускает колбэк
   setEventListeners() {
-    this._formElement.addEventListener('submit', (evt) => this._callbackSubmit(evt));
+    this._formElement.addEventListener('submit', this._doCallback);
     super.setEventListeners();
   }
 

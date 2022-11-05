@@ -7,7 +7,7 @@ export default class PopupDeleteCard extends Popup {
     this._callbackSubmit = callbackSubmit;
     this._cardId = '';
     this._cardElement = '';
-    this._doCallback = this._doCallback.bind(this);
+    this._doCallback = this._doCallback.bind(this);// этот нужно, чтобы можно было снять обработчик с кнопки
   }
 
   _doCallback(evt) { // этот метод нужен, чтобы можно было снять обработчик с кнопки

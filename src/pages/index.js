@@ -51,7 +51,11 @@ const handleHeartClick = card => {
       .catch(err => console.log(err));
   }
 };
-const handleCardDelete = card => popupDeleteCard.open(card._cardId, card.card);
+
+const handleCardDelete = card => {
+  popupDeleteCard.open(card._cardId, card.card);
+  popupDeleteCard.setEventListeners();
+}
 
 const deleteCardSubmit = evt => {
   evt.preventDefault();
@@ -79,7 +83,7 @@ const avatarFormSubmit = evt => {
   avatarPopup.isLoading(true);
   const inputValue = avatarPopup.getFormValues();
   api.newAvatar(inputValue.avatarInput)
-    .then(data => userInfo.setUserAvatar(userInfo.getUserInfo(data))) 
+    .then(data => userInfo.setUserAvatar(userInfo.getUserInfo(data)))
     .then(() => avatarPopup.close())
     .catch(err => console.log(err))
     .finally(() => avatarPopup.isLoading(false));
@@ -158,14 +162,19 @@ function addNewCard(cardData, callBacks) {
 
 
 // eventListeners-----------------------------------------------------------
-popupOpenButtons.profile.addEventListener('click', () => {resetProfileForm(), profilePopup.open()});
-popupOpenButtons.avatar.addEventListener('click', () => avatarPopup.open());
-popupOpenButtons.addCard.addEventListener('click', () => addCardPopup.open());
-
-avatarPopup.setEventListeners();
-profilePopup.setEventListeners();
-addCardPopup.setEventListeners();
-popupDeleteCard.setEventListeners();
+popupOpenButtons.profile.addEventListener('click', () => {
+  resetProfileForm();
+  profilePopup.open();
+  profilePopup.setEventListeners();
+});
+popupOpenButtons.avatar.addEventListener('click', () => {
+  avatarPopup.open();
+  avatarPopup.setEventListeners();
+});
+popupOpenButtons.addCard.addEventListener('click', () => {
+  addCardPopup.open();
+  addCardPopup.setEventListeners();
+});
 
 
 // executable code----------------------------------------------------------
