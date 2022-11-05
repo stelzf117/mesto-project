@@ -40,6 +40,7 @@ const handleHeartClick = card => {
         card._heartsCount.textContent = res.likes.length;
         card._heart.classList.remove('element__heart_active');
       })
+      .catch(err => console.log(err));
   }
   else {
     api.likeCard(card._cardId)
@@ -47,6 +48,7 @@ const handleHeartClick = card => {
         card._heartsCount.textContent = res.likes.length;
         card._heart.classList.add('element__heart_active');
       })
+      .catch(err => console.log(err));
   }
 };
 const handleCardDelete = card => popupDeleteCard.open(card._cardId, card.card);
@@ -57,6 +59,7 @@ const deleteCardSubmit = evt => {
   api.deleteCard(popupDeleteCard.getIdCard())
     .then(() => popupDeleteCard.delete())
     .then(() => popupDeleteCard.close())
+    .catch(err => console.log(err))
     .finally(() => popupDeleteCard.isLoading(false));
 };
 
@@ -67,6 +70,7 @@ const profileFormSubmit = evt => {
   api.editProfile(inputValues.nameInput, inputValues.statusInput)
     .then(data => userInfo.setUserInfo(userInfo.getUserInfo(data)))
     .then(() => profilePopup.close())
+    .catch(err => console.log(err))
     .finally(() => profilePopup.isLoading(false));
 };
 
@@ -77,6 +81,7 @@ const avatarFormSubmit = evt => {
   api.newAvatar(inputValue.avatarInput)
     .then(data => userInfo.setUserAvatar(userInfo.getUserInfo(data))) 
     .then(() => avatarPopup.close())
+    .catch(err => console.log(err))
     .finally(() => avatarPopup.isLoading(false));
 }
 
@@ -87,6 +92,7 @@ const addCardFormSubmit = evt => {
   api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput)
     .then((data) => addNewCard(data, callBacks))
     .then(() => addCardPopup.close())
+    .catch(err => console.log(err))
     .finally(() => addCardPopup.isLoading(false));
 }
 

@@ -11,14 +11,12 @@ export default class Api {
 
   requestNameBio() {
     return fetch(`${this._baseUrl}/users/me`, { headers: this._headers })
-      .then(result => this._checkAnswer(result))
-      .catch(err => console.log(err));
+      .then(result => this._checkAnswer(result));
   }
 
   requestCards() {
     return fetch(`${this._baseUrl}/cards`, { headers: this._headers })
-      .then(result => this._checkAnswer(result))
-      .catch(err => console.log(err));
+      .then(result => this._checkAnswer(result));
   }
 
   editProfile(newName, newDescription) {
@@ -30,8 +28,7 @@ export default class Api {
         about: newDescription
       })
     })
-      .then(result => this._checkAnswer(result))
-      .catch(err => console.log(err));
+      .then(result => this._checkAnswer(result));
   }
 
   postNewCard(imageName, imageLink) {
@@ -43,26 +40,22 @@ export default class Api {
         link: imageLink
       })
     })
-      .then(result => this._checkAnswer(result))
-      .catch(err => console.log(err));
+      .then(result => this._checkAnswer(result));
   }
 
   deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, { method: 'DELETE', headers: this._headers })
-      .then(result => this._checkAnswer(result))
-      .catch(err => console.log(err));
+      .then(result => this._checkAnswer(result));
   }
 
   likeCard(cardId) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, { method: 'PUT', headers: this._headers })
-      .then(result => this._checkAnswer(result))
-      .catch(err => console.log(err));
+      .then(result => this._checkAnswer(result));
   }
 
   likeDeleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/likes/${cardId}`, { method: 'DELETE', headers: this._headers })
-      .then(result => this._checkAnswer(result))
-      .catch(err => console.log(err));
+      .then(result => this._checkAnswer(result));
   }
 
   newAvatar(imageLink) {
@@ -71,7 +64,6 @@ export default class Api {
       headers: this._headers,
       body: JSON.stringify({ avatar: imageLink })
     })
-      .then(result => this._checkAnswer(result))
-      .catch(err => console.log(err));
+      .then(result => this._checkAnswer(result));
   }
 }
