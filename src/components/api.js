@@ -1,12 +1,4 @@
-export const apiConfig = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-14',
-  headers: {
-    authorization: 'a75084ed-65ff-46b2-92ef-67cae42fb5b5',
-    'Content-Type': 'application/json'
-  }
-}
-
-export class Api {
+export default class Api {
   constructor(apiConfig) {
     this._baseUrl = apiConfig.baseUrl;
     this._headers = apiConfig.headers;

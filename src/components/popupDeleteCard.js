@@ -1,6 +1,6 @@
 import { Popup } from './popup.js';
 
-export class PopupDeleteCard extends Popup {
+export default class PopupDeleteCard extends Popup {
   constructor(popupSelector, callbackSubmit) {
     super(popupSelector);
     this._button = this._popup.querySelector('.popup__button-save');
