@@ -7,6 +7,11 @@ export default class PopupDeleteCard extends Popup {
     this._callbackSubmit = callbackSubmit;
     this._cardId = '';
     this._cardElement = '';
+    this._doCallback = this._doCallback.bind(this);
+  }
+
+  _doCallback(evt) { // этот метод нужен, чтобы можно было снять обработчик с кнопки
+    this._callbackSubmit(evt);
   }
 
   getIdCard() {
@@ -19,10 +24,15 @@ export default class PopupDeleteCard extends Popup {
     return this._cardId = cardId, this._cardElement = cardElement;
   }
 
+  close() {
+    super.close();
+    this._button.removeEventListener('click', this._doCallback);
+  }
+
   // переписываем метод setEventListeners(), который унаследовали от класса Popup
   // добавляем слушатель на кнопку, которая запускает колбэк
   setEventListeners() {
-    this._button.addEventListener('click', (evt) => this._callbackSubmit(evt));
+    this._button.addEventListener('click', this._doCallback);
     super.setEventListeners();
   }
 
