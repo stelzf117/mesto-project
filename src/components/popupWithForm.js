@@ -13,6 +13,7 @@ export default class PopupWithForm extends Popup {
 
   _doCallback(evt) { // этот метод нужен, чтобы можно было снять обработчик с кнопки
     this._callbackSubmit(evt);
+    console.log('кнопка');
   }
 
   _getInputValues() {
@@ -30,22 +31,25 @@ export default class PopupWithForm extends Popup {
     return this._inputList;
   }
 
-  open() { // если не перезаписать так, то отрисовываются сразу 2-3 одинаковые карточки
-    this._popup.classList.add('popup_opened');
-    super.setEventListeners();
+  open() { // переписываем метод родителя
+    super.open();// присваиваем свойства родителя
+    this.setEventListeners();// используем переписанный метод
   }
 
-  close() {
-    this._formElement.reset();
-    super.close();
-    this._formElement.removeEventListener('submit', this._doCallback);
+  close() {// переписываем метод родителя
+    super.close();// присваиваем свойства родителя
+    this._formElement.reset();// сбрасыаем форму
+    this.deactivateEventListeners();// используем переписанный метод
   }
 
-  // переписываем метод setEventListeners(), который унаследовали от класса Popup
-  // добавляем слушатель на кнопку submit, которая запускает колбэк
-  setEventListeners() {
+  setEventListeners() {// переписываем метод родителя
+    super.setEventListeners();// присваиваем свойства родителя
     this._formElement.addEventListener('submit', this._doCallback);
-    super.setEventListeners();
+  }
+
+  deactivateEventListeners() {// переписываем метод родителя
+    super.deactivateEventListeners();// присваиваем свойства родителя
+    this._formElement.removeEventListener('submit', this._doCallback);
   }
 
   // изменение состояния кнопки при взаимодействии с сервером

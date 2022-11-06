@@ -54,7 +54,6 @@ const handleHeartClick = card => {
 
 const handleCardDelete = card => {
   popupDeleteCard.open(card._cardId, card.card);
-  popupDeleteCard.setEventListeners();
 }
 
 const deleteCardSubmit = evt => {
@@ -165,11 +164,9 @@ function addNewCard(cardData, callBacks) {
 popupOpenButtons.profile.addEventListener('click', () => {
   resetProfileForm();
   profilePopup.open();
-  profilePopup.setEventListeners();
 });
 popupOpenButtons.avatar.addEventListener('click', () => {
   avatarPopup.open();
-  avatarPopup.setEventListeners();
 });
 popupOpenButtons.addCard.addEventListener('click', () => {
   addCardPopup.open();
