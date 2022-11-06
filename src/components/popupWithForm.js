@@ -13,7 +13,6 @@ export default class PopupWithForm extends Popup {
 
   _doCallback(evt) { // этот метод нужен, чтобы можно было снять обработчик с кнопки
     this._callbackSubmit(evt);
-    console.log('кнопка');
   }
 
   _getInputValues() {
@@ -23,8 +22,8 @@ export default class PopupWithForm extends Popup {
     return this._inputValues;
   }
 
-  getFormValues() {
-    return this._getInputValues();
+  getFormValues(data) {
+    return this._getInputValues(data);
   }
 
   getInputList() {
