@@ -40,6 +40,7 @@ const handleHeartClick = card => {
         card._heartsCount.textContent = res.likes.length;
         card._heart.classList.remove('element__heart_active');
       })
+      .catch(err => console.log(err));
   }
   else {
     api.likeCard(card._cardId)
@@ -47,9 +48,13 @@ const handleHeartClick = card => {
         card._heartsCount.textContent = res.likes.length;
         card._heart.classList.add('element__heart_active');
       })
+      .catch(err => console.log(err));
   }
 };
-const handleCardDelete = card => popupDeleteCard.open(card._cardId, card.card);
+
+const handleCardDelete = card => {
+  popupDeleteCard.open(card._cardId, card.card);
+}
 
 const deleteCardSubmit = evt => {
   evt.preventDefault();
@@ -57,6 +62,7 @@ const deleteCardSubmit = evt => {
   api.deleteCard(popupDeleteCard.getIdCard())
     .then(() => popupDeleteCard.delete())
     .then(() => popupDeleteCard.close())
+    .catch(err => console.log(err))
     .finally(() => popupDeleteCard.isLoading(false));
 };
 
@@ -65,8 +71,12 @@ const profileFormSubmit = evt => {
   profilePopup.isLoading(true);
   const inputValues = profilePopup.getFormValues();
   api.editProfile(inputValues.nameInput, inputValues.statusInput)
-    .then(data => userInfo.setUserInfo(userInfo.getUserInfo(data)))
+    .then(data => {
+      const userObj = userInfo.getUserInfo(data);
+      userInfo.setUserInfo(userObj);
+    })
     .then(() => profilePopup.close())
+    .catch(err => console.log(err))
     .finally(() => profilePopup.isLoading(false));
 };
 
@@ -75,8 +85,12 @@ const avatarFormSubmit = evt => {
   avatarPopup.isLoading(true);
   const inputValue = avatarPopup.getFormValues();
   api.newAvatar(inputValue.avatarInput)
-    .then(data => userInfo.setUserAvatar(userInfo.getUserInfo(data))) 
+    .then(data => {
+      const userObj = userInfo.getUserInfo(data);
+      userInfo.setUserInfo(userObj);
+    })
     .then(() => avatarPopup.close())
+    .catch(err => console.log(err))
     .finally(() => avatarPopup.isLoading(false));
 }
 
@@ -87,6 +101,7 @@ const addCardFormSubmit = evt => {
   api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput)
     .then((data) => addNewCard(data, callBacks))
     .then(() => addCardPopup.close())
+    .catch(err => console.log(err))
     .finally(() => addCardPopup.isLoading(false));
 }
 
@@ -125,16 +140,10 @@ const avatarFormValidator = new FormValidator(validationConfig, formSelectors.av
 const profileFormValidator = new FormValidator(validationConfig, formSelectors.profile);
 const addCardformValidator = new FormValidator(validationConfig, formSelectors.addCard);
 
-const userInfo = new UserInfo(profileSelectors);
+const userInfo = new UserInfo(profileSelectors, profileFormFields);
 
 
 //functions----------------------------------------------------------------
-function resetProfileForm() {
-  profileFormFields.userName.value = profileSelectors.userName.textContent;
-  profileFormFields.userDescription.value = profileSelectors.userDescription.textContent;
-  const inputList = profilePopup.getInputList();
-  inputList.forEach((inputElement) => { profileFormValidator.checkInputValidity(inputElement) });
-};
 
 function addNewCard(cardData, callBacks) {
   const item = {
@@ -152,14 +161,19 @@ function addNewCard(cardData, callBacks) {
 
 
 // eventListeners-----------------------------------------------------------
-popupOpenButtons.profile.addEventListener('click', () => {resetProfileForm(), profilePopup.open()});
+popupOpenButtons.profile.addEventListener('click', () => {
+  formSelectors.profile.reset();
+  api.requestNameBio()
+    .then(data => userInfo.setInput(data.name, data.about))
+    .then(() => {
+      profileFormValidator.checkInputValidity(profileFormFields.userName);
+      profileFormValidator.checkInputValidity(profileFormFields.userDescription);
+    })
+    .then(() => profilePopup.open());
+  ;
+});
 popupOpenButtons.avatar.addEventListener('click', () => avatarPopup.open());
 popupOpenButtons.addCard.addEventListener('click', () => addCardPopup.open());
-
-avatarPopup.setEventListeners();
-profilePopup.setEventListeners();
-addCardPopup.setEventListeners();
-popupDeleteCard.setEventListeners();
 
 
 // executable code----------------------------------------------------------
@@ -169,7 +183,8 @@ addCardformValidator.enableValidation();
 
 Promise.all([api.requestNameBio(), api.requestCards()])
   .then(([userData, cardsData]) => {
-    userInfo.setUserInfo(userInfo.getUserInfo(userData));
+    const userObj = userInfo.getUserInfo(userData);
+    userInfo.setUserInfo(userObj);
     const renderCards = new Section({
       items: cardsData,
       renderer: item => {

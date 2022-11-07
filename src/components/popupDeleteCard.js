@@ -7,23 +7,36 @@ export default class PopupDeleteCard extends Popup {
     this._callbackSubmit = callbackSubmit;
     this._cardId = '';
     this._cardElement = '';
+    this._doCallback = this._doCallback.bind(this);// этот нужно, чтобы можно было снять обработчик с кнопки
+  }
+
+  _doCallback(evt) { // этот метод нужен, чтобы можно было снять обработчик с кнопки
+    this._callbackSubmit(evt);
   }
 
   getIdCard() {
     return this._cardId;
   }
 
-  open(cardId, cardElement) {
-    this._popup.classList.add('popup_opened');
-    super.setEventListeners();
+  open(cardId, cardElement) { // переписываем метод родителя
+    super.open();// присваиваем свойства родителя
+    this.setEventListeners();// используем переписанный метод
     return this._cardId = cardId, this._cardElement = cardElement;
   }
 
-  // переписываем метод setEventListeners(), который унаследовали от класса Popup
-  // добавляем слушатель на кнопку, которая запускает колбэк
-  setEventListeners() {
-    this._button.addEventListener('click', (evt) => this._callbackSubmit(evt));
-    super.setEventListeners();
+  close() {// переписываем метод родителя
+    super.close();// присваиваем свойства родителя
+    this.deactivateEventListeners();// используем переписанный метод
+  }
+
+  setEventListeners() {// переписываем метод родителя
+    super.setEventListeners();// присваиваем свойства родителя
+    this._button.addEventListener('click', this._doCallback);
+  }
+
+  deactivateEventListeners() {// переписываем метод родителя
+    super.deactivateEventListeners();// присваиваем свойства родителя
+    this._button.removeEventListener('click', this._doCallback);
   }
 
   // изменение состояния кнопки при взаимодействии с сервером
