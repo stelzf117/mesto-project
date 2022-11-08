@@ -149,7 +149,6 @@ const addCardformValidator = new FormValidator(validationConfig, formSelectors.a
 
 const userInfo = new UserInfo(profileSelectors, profileFormFields);
 
-
 //functions----------------------------------------------------------------
 function createCard(item, userId) {
   const card = new Card(item, cardBlank, userId, callBacks);
@@ -157,16 +156,30 @@ function createCard(item, userId) {
   return markupCard;
 }
 
+// executable code----------------------------------------------------------
+let userData;
+api.requestNameBio()
+  .then(data => {
+    userData = data;
+    userInfo.getUserInfo(data);
+    userInfo.setUserInfo()
+  })
+
+api.requestCards()
+  .then(cardsData => renderCard.renderItems(cardsData, userData._id))
+  .catch(err => console.log(err))
+
+profileFormValidator.enableValidation();
+avatarFormValidator.enableValidation();
+addCardformValidator.enableValidation();
+
+
 // eventListeners-----------------------------------------------------------
 popupOpenButtons.profile.addEventListener('click', () => {
   formSelectors.profile.reset();
-  api.requestNameBio()
-    .then(data => userInfo.setInput(data.name, data.about))
-    .then(() => {
+      userInfo.setInput(userData.name, userData.about)
       profileFormValidator.clearMistakes();
       profilePopup.open();
-    });
-  ;
 });
 popupOpenButtons.avatar.addEventListener('click', () => {
   avatarFormValidator.clearMistakes();
@@ -176,19 +189,3 @@ popupOpenButtons.addCard.addEventListener('click', () => {
   addCardformValidator.clearMistakes();
   addCardPopup.open();
 });
-
-
-// executable code----------------------------------------------------------
-profileFormValidator.enableValidation();
-avatarFormValidator.enableValidation();
-addCardformValidator.enableValidation();
-
-
-
-Promise.all([api.requestNameBio(), api.requestCards()])
-  .then(([userData, cardsData]) => {
-    const userObj = userInfo.getUserInfo(userData);
-    userInfo.setUserInfo(userObj);
-    renderCard.renderItems(cardsData, userData._id)
-  })
-  .catch(err => console.log(err));
