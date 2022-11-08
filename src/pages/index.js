@@ -85,7 +85,7 @@ const avatarFormSubmit = evt => {
   const inputValue = avatarPopup.getFormValues();
   api.newAvatar(inputValue.avatarInput)
     .then(data => {
-      userInfo.setUserAvatar(userInfo.getUserInfo(data));
+      userInfo.setUserInfo(userInfo.getUserInfo(data));
     })
     .then(() => avatarPopup.close())
     .catch(err => console.log(err))
@@ -159,7 +159,7 @@ let userData;
 api.requestNameBio()
   .then(data => {
     userData = data;
-    userInfo.setUserInfo(userInfo.getUserInfo(userData));
+    userInfo.setUserInfo(userInfo.getUserInfo(data));
   })
 
 api.requestCards()
