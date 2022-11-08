@@ -32,13 +32,11 @@ export default class PopupWithForm extends Popup {
 
   open() { // переписываем метод родителя
     super.open();// присваиваем свойства родителя
-    this.setEventListeners();// используем переписанный метод
   }
 
   close() {// переписываем метод родителя
     super.close();// присваиваем свойства родителя
     this._formElement.reset();// сбрасыаем форму
-    this.deactivateEventListeners();// используем переписанный метод
   }
 
   setEventListeners() {// переписываем метод родителя
