@@ -99,10 +99,16 @@ const addCardFormSubmit = evt => {
   addCardPopup.isLoading(true);
   const inputValues = addCardPopup.getFormValues();
   api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput)
-    .then((data) => addNewCard(data, callBacks))
+    .then((data) => renderCard.addItem(createCard(data))) //addNewCard(data, callBacks)
     .then(() => addCardPopup.close())
     .catch(err => console.log(err))
     .finally(() => addCardPopup.isLoading(false));
+}
+
+const renderer = {
+  renderer: (item, id) => {
+    renderCard._container.append(createCard(item, id));
+  }
 }
 
 const callBacks = {
@@ -112,9 +118,9 @@ const callBacks = {
   profileFormSubmit: profileFormSubmit,
   deleteCardSubmit: deleteCardSubmit,
   avatarFormSubmit: avatarFormSubmit,
-  addCardFormSubmit, addCardFormSubmit
+  addCardFormSubmit, addCardFormSubmit,
+  renderer: renderer
 }
-
 
 // import components--------------------------------------------------------
 import Api from '../components/api.js';
@@ -130,6 +136,7 @@ import PopupDeleteCard from '../components/popupDeleteCard.js';
 // initial components-------------------------------------------------------
 const api = new Api(apiConfig);
 
+const renderCard = new Section(cardPlace, callBacks.renderer)
 const popupWithImage = new PopupWithImage(popupSelectors.viewCard);
 const profilePopup = new PopupWithForm(popupSelectors.profile, evt => callBacks.profileFormSubmit(evt));
 const addCardPopup = new PopupWithForm(popupSelectors.addCard, evt => callBacks.addCardFormSubmit(evt));
@@ -144,21 +151,11 @@ const userInfo = new UserInfo(profileSelectors, profileFormFields);
 
 
 //functions----------------------------------------------------------------
-
-function addNewCard(cardData, callBacks) {
-  const item = {
-    description: cardData.name,
-    link: cardData.link,
-    likes: false,
-    owner: { _id: true },
-    _id: cardData._id
-  };
-  const renderCard = new Section({}, cardPlace);
-  const newCard = new Card(item, cardBlank, true, callBacks);
-  renderCard.addItem(newCard.returnCard(cardData.name, cardData.link));
-  formSelectors.addCard.reset();
-};
-
+function createCard(item, userId) {
+  const card = new Card(item, cardBlank, userId, callBacks);
+  const markupCard = card.returnCard();
+  return markupCard;
+}
 
 // eventListeners-----------------------------------------------------------
 popupOpenButtons.profile.addEventListener('click', () => {
@@ -181,19 +178,12 @@ profileFormValidator.enableValidation();
 avatarFormValidator.enableValidation();
 addCardformValidator.enableValidation();
 
+
+
 Promise.all([api.requestNameBio(), api.requestCards()])
   .then(([userData, cardsData]) => {
     const userObj = userInfo.getUserInfo(userData);
     userInfo.setUserInfo(userObj);
-    const renderCards = new Section({
-      items: cardsData,
-      renderer: item => {
-        const card = new Card(item, cardBlank, userData._id, callBacks);
-        renderCards.container.append(card.returnCard(item.name, item.link));
-      }
-    },
-      cardPlace
-    );
-    renderCards.renderItems()
+    renderCard.renderItems(cardsData, userData._id)
   })
   .catch(err => console.log(err));

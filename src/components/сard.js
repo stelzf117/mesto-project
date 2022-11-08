@@ -24,10 +24,10 @@ export default class Card {
   }
 
   // edit node
-  _enterData(description, link) {
-    this._photoName.textContent = description;
-    this._photoElement.src = link;
-    this._photoElement.alt = description + '.';
+  _enterData() {
+    this._photoName.textContent = this._nameImage;
+    this._photoElement.src = this._linkImage;
+    this._photoElement.alt = this._nameImage + '.';
 
     // likes
     if (this._likes.length) {
@@ -46,15 +46,15 @@ export default class Card {
     }
   }
 
-  _addEventListeners(description, link) {
-    this._photoElement.addEventListener('click', () => this._handleCardClick(description, link));
+  _addEventListeners() {
+    this._photoElement.addEventListener('click', () => this._handleCardClick(this._nameImage, this._linkImage));
     this._heart.addEventListener('click', () => this._handleHeartClick(this));
     this._trash.addEventListener('click', () => this._handleCardDelete(this));
   }
 
-  returnCard(description, link) {
-    this._enterData(description, link);
-    this._addEventListeners(description, link);
+  returnCard() {
+    this._enterData();
+    this._addEventListeners();
     return this._cardBlank;
   }
 }
