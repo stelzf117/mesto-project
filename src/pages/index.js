@@ -155,7 +155,7 @@ function createCard(item, userId) {
 }
 
 // executable code----------------------------------------------------------
-let userData;
+/* let userData;
 api.requestNameBio()
   .then(data => {
     userData = data;
@@ -165,6 +165,14 @@ api.requestNameBio()
 api.requestCards()
   .then(cardsData => renderCard.renderItems(cardsData, userData._id))
   .catch(err => console.log(err))
+ */
+
+Promise.all([api.requestNameBio(), api.requestCards()])
+  .then(([userData, cardsData]) => {
+    userInfo.setUserInfo(userInfo.getUserInfo(userData));
+    renderCard.renderItems(cardsData, userData._id);
+  })
+  .catch(err => console.log(err));
 
 profileFormValidator.enableValidation();
 avatarFormValidator.enableValidation();
@@ -174,9 +182,12 @@ addCardformValidator.enableValidation();
 // eventListeners-----------------------------------------------------------
 popupOpenButtons.profile.addEventListener('click', () => {
   formSelectors.profile.reset();
-  userInfo.setInput()
-  profileFormValidator.clearMistakes();
-  profilePopup.open();
+  api.requestNameBio()
+    .then(data => {
+      userInfo.setInput(userInfo.getUserInfo(data))
+      profileFormValidator.clearMistakes();
+      profilePopup.open();
+    });
 });
 
 popupOpenButtons.avatar.addEventListener('click', () => {

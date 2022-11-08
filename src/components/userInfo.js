@@ -21,8 +21,8 @@ export default class UserInfo {
     this._userAvatarSelector.src = avatar;
   }
 
-  setInput() {
-    this._inputName.value = this._userNameSelector.textContent;
-    this._inputStatus.value = this._userDescriptionSelector.textContent ;
+  setInput({ name, description }) {
+    this._inputName.value = name;
+    this._inputStatus.value = description;
   }
 }
