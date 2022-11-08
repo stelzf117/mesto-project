@@ -19,6 +19,10 @@ export default class FormValidator {
     });
   }
 
+  clearMistakes() {
+    this._inputList.forEach((inputElement) => { this._hideInputError(inputElement) })
+  }
+
   checkInputValidity(inputElement) {
     if (inputElement.validity.patternMismatch) {
       inputElement.setCustomValidity(inputElement.dataset.errorMessage);

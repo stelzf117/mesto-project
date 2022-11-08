@@ -163,14 +163,19 @@ popupOpenButtons.profile.addEventListener('click', () => {
   api.requestNameBio()
     .then(data => userInfo.setInput(data.name, data.about))
     .then(() => {
-      profileFormValidator.checkInputValidity(profileFormFields.userName);
-      profileFormValidator.checkInputValidity(profileFormFields.userDescription);
-    })
-    .then(() => profilePopup.open());
+      profileFormValidator.clearMistakes();
+      profilePopup.open();
+    });
   ;
 });
-popupOpenButtons.avatar.addEventListener('click', () => avatarPopup.open());
-popupOpenButtons.addCard.addEventListener('click', () => addCardPopup.open());
+popupOpenButtons.avatar.addEventListener('click', () => {
+  avatarFormValidator.clearMistakes();
+  avatarPopup.open();
+});
+popupOpenButtons.addCard.addEventListener('click', () => {
+  addCardformValidator.clearMistakes();
+  addCardPopup.open();
+});
 
 
 // executable code----------------------------------------------------------
