@@ -164,6 +164,8 @@ api.requestNameBio()
     userInfo.getUserInfo(data);
     userInfo.setUserInfo()
   })
+console.log(userData);
+
 
 api.requestCards()
   .then(cardsData => renderCard.renderItems(cardsData, userData._id))
