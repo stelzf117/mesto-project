@@ -11,8 +11,7 @@ export default class UserInfo {
     return {
       name: data.name,
       description: data.about,
-      avatar: data.avatar,
-      _id: data._id
+      avatar: data.avatar
     }
   }
 
@@ -22,8 +21,8 @@ export default class UserInfo {
     this._userAvatarSelector.src = avatar;
   }
 
-  setInput({ name, description }) {
-    this._inputName.value = name;
-    this._inputStatus.value = description;
+  setInput() {
+    this._inputName.value = this._userNameSelector.textContent;
+    this._inputStatus.value = this._userDescriptionSelector.textContent ;
   }
 }
