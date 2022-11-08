@@ -10,15 +10,15 @@ export default class UserInfo {
   getUserInfo(data) {
     return {
       name: data.name,
-      about: data.about,
+      description: data.about,
       avatar: data.avatar,
-      //id: data._id
+      id: data._id
     }
   }
 
-  setUserInfo({ name, about }) {
+  setUserInfo({ name, description }) {
     this._userNameSelector.textContent = name;
-    this._userDescriptionSelector.textContent = about;
+    this._userDescriptionSelector.textContent = description;
   }
 
 
