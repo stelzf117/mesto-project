@@ -72,8 +72,7 @@ const profileFormSubmit = evt => {
   const inputValues = profilePopup.getFormValues();
   api.editProfile(inputValues.nameInput, inputValues.statusInput)
     .then(data => {
-      const userObj = userInfo.getUserInfo(data);
-      userInfo.setUserInfo(userObj);
+      userInfo.setUserInfo(userInfo.getUserInfo(data));
     })
     .then(() => profilePopup.close())
     .catch(err => console.log(err))
@@ -86,8 +85,7 @@ const avatarFormSubmit = evt => {
   const inputValue = avatarPopup.getFormValues();
   api.newAvatar(inputValue.avatarInput)
     .then(data => {
-      const userObj = userInfo.getUserInfo(data);
-      userInfo.setUserInfo(userObj);
+      userInfo.setUserInfo(userInfo.getUserInfo(data));
     })
     .then(() => avatarPopup.close())
     .catch(err => console.log(err))
@@ -99,7 +97,7 @@ const addCardFormSubmit = evt => {
   addCardPopup.isLoading(true);
   const inputValues = addCardPopup.getFormValues();
   api.postNewCard(inputValues.pictureNameInput, inputValues.linkCardImageInput)
-    .then((data) => renderCard.addItem(createCard(data))) //addNewCard(data, callBacks)
+    .then((data) => renderCard.addItem(createCard(data)))
     .then(() => addCardPopup.close())
     .catch(err => console.log(err))
     .finally(() => addCardPopup.isLoading(false));
@@ -157,17 +155,24 @@ function createCard(item, userId) {
 }
 
 // executable code----------------------------------------------------------
-let userData;
+/* let userData;
 api.requestNameBio()
   .then(data => {
     userData = data;
-    userInfo.getUserInfo(data);
-    userInfo.setUserInfo()
+    userInfo.setUserInfo(userInfo.getUserInfo(data));
   })
 
 api.requestCards()
   .then(cardsData => renderCard.renderItems(cardsData, userData._id))
   .catch(err => console.log(err))
+ */
+
+Promise.all([api.requestNameBio(), api.requestCards()])
+  .then(([userData, cardsData]) => {
+    userInfo.setUserInfo(userInfo.getUserInfo(userData));
+    renderCard.renderItems(cardsData, userData._id);
+  })
+  .catch(err => console.log(err));
 
 profileFormValidator.enableValidation();
 avatarFormValidator.enableValidation();
@@ -177,14 +182,19 @@ addCardformValidator.enableValidation();
 // eventListeners-----------------------------------------------------------
 popupOpenButtons.profile.addEventListener('click', () => {
   formSelectors.profile.reset();
-      userInfo.setInput(userData.name, userData.about)
+  api.requestNameBio()
+    .then(data => {
+      userInfo.setInput(userInfo.getUserInfo(data))
       profileFormValidator.clearMistakes();
       profilePopup.open();
+    });
 });
+
 popupOpenButtons.avatar.addEventListener('click', () => {
   avatarFormValidator.clearMistakes();
   avatarPopup.open();
 });
+
 popupOpenButtons.addCard.addEventListener('click', () => {
   addCardformValidator.clearMistakes();
   addCardPopup.open();
