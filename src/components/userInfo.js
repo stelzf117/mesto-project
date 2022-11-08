@@ -8,32 +8,26 @@ export default class UserInfo {
   }
 
   getUserInfo(data) {
-    return this._userData = {
+    return {
       name: data.name,
-      description: data.about,
+      about: data.about,
       avatar: data.avatar,
-      id: data._id
+      //id: data._id
     }
   }
 
-  setUserInfo() {
-    this._userNameSelector.textContent = this._userData.name;
-    this._userDescriptionSelector.textContent = this._userData.description;
+  setUserInfo({ name, about }) {
+    this._userNameSelector.textContent = name;
+    this._userDescriptionSelector.textContent = about;
   }
 
 
-  setInput(name, description) {
-    this._inputName.value = name;
-    this._inputStatus.value = description;
+  setInput() {
+    this._inputName.value = this._userNameSelector.textContent;
+    this._inputStatus.value = this._userDescriptionSelector.textContent;
   }
 
-  setUserAvatar() {
-    this._userAvatarSelector.src = this._userData.avatar;
-  }
-
-  setUserInfo() {
-    this._userNameSelector.textContent = this._userData.name;
-    this._userDescriptionSelector.textContent = this._userData.description;
-    this._userAvatarSelector.src = this._userData.avatar;
+  setUserAvatar({ avatar }) {
+    this._userAvatarSelector.src = avatar;
   }
 }
