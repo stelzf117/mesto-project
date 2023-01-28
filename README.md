@@ -11,6 +11,7 @@
 * flexbox 
 * БЭМ-Nested
 * Grid
+* Webpack
 
 ## Ссылки
 <a href="https://stelzf117.github.io/mesto-project/">Github pages</a> <br>
@@ -21,3 +22,6 @@
 * Устанавливаем npm пакеты. В терминале: ``` npm install ```
 * Запускаем. В терминале: ``` npm run dev ```
 * Проект откроется в браузере по умолчанию по адресу: ``` http://localhost:8080 ```
+
+## Примечание
+* Для запуска необходима установленная Node.js
