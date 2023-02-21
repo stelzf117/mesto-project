@@ -1,0 +1,38 @@
+.profile__avatar-container {
+  position: relative;
+  cursor: pointer;
+}
+
+ .profile__avatar-container::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity .2s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.profile__avatar-container:hover::before {
+  opacity: 1;
+}
+
+.profile__avatar-container::after {
+  content: "";
+  background: center no-repeat url(../../../images/pen.svg) transparent;
+  background-size: 26px 26px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity .2s ease-in-out;
+  position: absolute;
+}
+
+.profile__avatar-container:hover::after {
+  opacity: 1;
+}
